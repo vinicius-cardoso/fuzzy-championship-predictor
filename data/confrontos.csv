@@ -1,0 +1,381 @@
+rodada,time_mandante,time_visitante
+1,Internacional,Bahia
+1,Criciúma,Juventude
+1,Fluminense,RB Bragantino
+1,São Paulo,Fortaleza
+1,Atlético-GO,Flamengo
+1,Vasco da Gama,Grêmio
+1,Corinthians,Atlético-MG
+1,Athletico-PR,Cuiabá
+1,Cruzeiro,Botafogo
+1,EC Vitória,Palmeiras
+2,Bahia,Fluminense
+2,Grêmio,Athletico-PR
+2,Atlético-MG,Criciúma
+2,RB Bragantino,Vasco da Gama
+2,Fortaleza,Cruzeiro
+2,Juventude,Corinthians
+2,Palmeiras,Internacional
+2,Flamengo,São Paulo
+2,Botafogo,Atlético-GO
+2,Cuiabá,EC Vitória
+3,Fluminense,Vasco da Gama
+3,Grêmio,Cuiabá
+3,RB Bragantino,Corinthians
+3,Atlético-MG,Cruzeiro
+3,EC Vitória,Bahia
+3,Palmeiras,Flamengo
+3,Athletico-PR,Internacional
+3,Botafogo,Juventude
+3,Atlético-GO,São Paulo
+3,Criciúma,Fortaleza
+4,Vasco da Gama,Criciúma
+4,Cuiabá,Atlético-MG
+4,Bahia,Grêmio
+4,Flamengo,Botafogo
+4,Cruzeiro,EC Vitória
+4,Corinthians,Fluminense
+4,Fortaleza,RB Bragantino
+4,Juventude,Athletico-PR
+4,Internacional,Atlético-GO
+4,São Paulo,Palmeiras
+5,Fluminense,Atlético-MG
+5,RB Bragantino,Flamengo
+5,Corinthians,Fortaleza
+5,EC Vitória,São Paulo
+5,Athletico-PR,Vasco da Gama
+5,Botafogo,Bahia
+5,Cuiabá,Palmeiras
+5,Juventude,Atlético-GO
+5,Cruzeiro,Internacional
+5,Grêmio,Criciúma
+6,Flamengo,Corinthians
+6,Vasco da Gama,EC Vitória
+6,Atlético-GO,Cruzeiro
+6,Palmeiras,Athletico-PR
+6,Fortaleza,Botafogo
+6,Bahia,RB Bragantino
+6,São Paulo,Fluminense
+6,Criciúma,Cuiabá
+6,Atlético-MG,Grêmio
+6,Internacional,Juventude
+7,EC Vitória,Atlético-GO
+7,Grêmio,RB Bragantino
+7,Cuiabá,Internacional
+7,Fluminense,Juventude
+7,Corinthians,Botafogo
+7,Vasco da Gama,Flamengo
+7,Criciúma,Palmeiras
+7,Atlético-MG,Bahia
+7,Fortaleza,Athletico-PR
+7,São Paulo,Cruzeiro
+8,Juventude,EC Vitória
+8,Atlético-GO,Corinthians
+8,Botafogo,Fluminense
+8,RB Bragantino,Atlético-MG
+8,Cruzeiro,Cuiabá
+8,Athletico-PR,Criciúma
+8,Flamengo,Grêmio
+8,Internacional,São Paulo
+8,Palmeiras,Vasco da Gama
+8,Bahia,Fortaleza
+9,RB Bragantino,Juventude
+9,Fluminense,Atlético-GO
+9,EC Vitória,Internacional
+9,Athletico-PR,Flamengo
+9,Corinthians,São Paulo
+9,Criciúma,Bahia
+9,Grêmio,Botafogo
+9,Vasco da Gama,Cruzeiro
+9,Cuiabá,Fortaleza
+9,Atlético-MG,Palmeiras
+10,Botafogo,Athletico-PR
+10,Fortaleza,Grêmio
+10,Atlético-GO,Criciúma
+10,Juventude,Vasco da Gama
+10,São Paulo,Cuiabá
+10,Internacional,Corinthians
+10,Cruzeiro,Fluminense
+10,EC Vitória,Atlético-MG
+10,Flamengo,Bahia
+10,Palmeiras,RB Bragantino
+11,Criciúma,Botafogo
+11,Cuiabá,Atlético-GO
+11,Vasco da Gama,São Paulo
+11,Fluminense,Flamengo
+11,Grêmio,Internacional
+11,Athletico-PR,Corinthians
+11,Palmeiras,Juventude
+11,RB Bragantino,EC Vitória
+11,Atlético-MG,Fortaleza
+11,Bahia,Cruzeiro
+12,Corinthians,Cuiabá
+12,Cruzeiro,Athletico-PR
+12,Botafogo,RB Bragantino
+12,Juventude,Flamengo
+12,Atlético-GO,Grêmio
+12,Bahia,Vasco da Gama
+12,Internacional,Atlético-MG
+12,Fortaleza,Palmeiras
+12,Fluminense,EC Vitória
+12,São Paulo,Criciúma
+13,Cuiabá,RB Bragantino
+13,Vasco da Gama,Botafogo
+13,Palmeiras,Corinthians
+13,Atlético-MG,Atlético-GO
+13,São Paulo,Bahia
+13,Grêmio,Fluminense
+13,Fortaleza,Juventude
+13,EC Vitória,Athletico-PR
+13,Flamengo,Cruzeiro
+13,Criciúma,Internacional
+14,RB Bragantino,Atlético-GO
+14,Cuiabá,Botafogo
+14,Criciúma,Cruzeiro
+14,Vasco da Gama,Fortaleza
+14,Corinthians,EC Vitória
+14,Athletico-PR,São Paulo
+14,Atlético-MG,Flamengo
+14,Grêmio,Palmeiras
+14,Bahia,Juventude
+14,Fluminense,Internacional
+15,EC Vitória,Criciúma
+15,Flamengo,Cuiabá
+15,São Paulo,RB Bragantino
+15,Cruzeiro,Corinthians
+15,Juventude,Grêmio
+15,Palmeiras,Bahia
+15,Botafogo,Atlético-MG
+15,Fortaleza,Fluminense
+15,Atlético-GO,Athletico-PR
+15,Internacional,Vasco da Gama
+16,Grêmio,Cruzeiro
+16,Atlético-MG,São Paulo
+16,EC Vitória,Botafogo
+16,Flamengo,Fortaleza
+16,Vasco da Gama,Corinthians
+16,Palmeiras,Atlético-GO
+16,RB Bragantino,Internacional
+16,Athletico-PR,Bahia
+16,Cuiabá,Juventude
+16,Criciúma,Fluminense
+17,Internacional,Flamengo
+17,Cruzeiro,RB Bragantino
+17,Bahia,Cuiabá
+17,Fluminense,Athletico-PR
+17,Botafogo,Palmeiras
+17,Corinthians,Criciúma
+17,São Paulo,Grêmio
+17,Fortaleza,EC Vitória
+17,Atlético-GO,Vasco da Gama
+17,Juventude,Atlético-MG
+18,Grêmio,EC Vitória
+18,Atlético-MG,Vasco da Gama
+18,Bahia,Corinthians
+18,Flamengo,Criciúma
+18,Botafogo,Internacional
+18,Palmeiras,Cruzeiro
+18,RB Bragantino,Athletico-PR
+18,Fortaleza,Atlético-GO
+18,Cuiabá,Fluminense
+18,Juventude,São Paulo
+19,Internacional,Fortaleza
+19,Cruzeiro,Juventude
+19,EC Vitória,Flamengo
+19,Fluminense,Palmeiras
+19,Vasco da Gama,Cuiabá
+19,Corinthians,Grêmio
+19,São Paulo,Botafogo
+19,Athletico-PR,Atlético-MG
+19,Atlético-GO,Bahia
+19,Criciúma,RB Bragantino
+20,Grêmio,Vasco da Gama
+20,Atlético-MG,Corinthians
+20,Bahia,Internacional
+20,Flamengo,Atlético-GO
+20,Botafogo,Cruzeiro
+20,Palmeiras,EC Vitória
+20,RB Bragantino,Fluminense
+20,Fortaleza,São Paulo
+20,Cuiabá,Athletico-PR
+20,Juventude,Criciúma
+21,Internacional,Palmeiras
+21,Cruzeiro,Fortaleza
+21,EC Vitória,Cuiabá
+21,Fluminense,Bahia
+21,Vasco da Gama,RB Bragantino
+21,Corinthians,Juventude
+21,São Paulo,Flamengo
+21,Athletico-PR,Grêmio
+21,Atlético-GO,Botafogo
+21,Criciúma,Atlético-MG
+22,Internacional,Athletico-PR
+22,Cruzeiro,Atlético-MG
+22,Bahia,EC Vitória
+22,Flamengo,Palmeiras
+22,Vasco da Gama,Fluminense
+22,Corinthians,RB Bragantino
+22,São Paulo,Atlético-GO
+22,Fortaleza,Criciúma
+22,Cuiabá,Grêmio
+22,Juventude,Botafogo
+23,Grêmio,Bahia
+23,Atlético-MG,Cuiabá
+23,EC Vitória,Cruzeiro
+23,Fluminense,Corinthians
+23,Botafogo,Flamengo
+23,Palmeiras,São Paulo
+23,RB Bragantino,Fortaleza
+23,Athletico-PR,Juventude
+23,Atlético-GO,Internacional
+23,Criciúma,Vasco da Gama
+24,Internacional,Cruzeiro
+24,Atlético-MG,Fluminense
+24,Bahia,Botafogo
+24,Flamengo,RB Bragantino
+24,Vasco da Gama,Athletico-PR
+24,Palmeiras,Cuiabá
+24,São Paulo,EC Vitória
+24,Fortaleza,Corinthians
+24,Atlético-GO,Juventude
+24,Criciúma,Grêmio
+25,Grêmio,Atlético-MG
+25,Cruzeiro,Atlético-GO
+25,EC Vitória,Vasco da Gama
+25,Fluminense,São Paulo
+25,Botafogo,Fortaleza
+25,Corinthians,Flamengo
+25,RB Bragantino,Bahia
+25,Athletico-PR,Palmeiras
+25,Cuiabá,Criciúma
+25,Juventude,Internacional
+26,Internacional,Cuiabá
+26,Cruzeiro,São Paulo
+26,Bahia,Atlético-MG
+26,Flamengo,Vasco da Gama
+26,Botafogo,Corinthians
+26,Palmeiras,Criciúma
+26,RB Bragantino,Grêmio
+26,Athletico-PR,Fortaleza
+26,Atlético-GO,EC Vitória
+26,Juventude,Fluminense
+27,Grêmio,Flamengo
+27,Atlético-MG,RB Bragantino
+27,EC Vitória,Juventude
+27,Fluminense,Botafogo
+27,Vasco da Gama,Palmeiras
+27,Corinthians,Atlético-GO
+27,São Paulo,Internacional
+27,Fortaleza,Bahia
+27,Cuiabá,Cruzeiro
+27,Criciúma,Athletico-PR
+28,Internacional,EC Vitória
+28,Cruzeiro,Vasco da Gama
+28,Bahia,Criciúma
+28,Flamengo,Athletico-PR
+28,Botafogo,Grêmio
+28,Palmeiras,Atlético-MG
+28,São Paulo,Corinthians
+28,Fortaleza,Cuiabá
+28,Atlético-GO,Fluminense
+28,Juventude,RB Bragantino
+29,Grêmio,Fortaleza
+29,Atlético-MG,EC Vitória
+29,Bahia,Flamengo
+29,Fluminense,Cruzeiro
+29,Vasco da Gama,Juventude
+29,Corinthians,Internacional
+29,RB Bragantino,Palmeiras
+29,Athletico-PR,Botafogo
+29,Cuiabá,São Paulo
+29,Criciúma,Atlético-GO
+30,Internacional,Grêmio
+30,Cruzeiro,Bahia
+30,EC Vitória,RB Bragantino
+30,Flamengo,Fluminense
+30,Botafogo,Criciúma
+30,Corinthians,Athletico-PR
+30,São Paulo,Vasco da Gama
+30,Fortaleza,Atlético-MG
+30,Atlético-GO,Cuiabá
+30,Juventude,Palmeiras
+31,Grêmio,Atlético-GO
+31,Atlético-MG,Internacional
+31,EC Vitória,Fluminense
+31,Flamengo,Juventude
+31,Vasco da Gama,Bahia
+31,Palmeiras,Fortaleza
+31,RB Bragantino,Botafogo
+31,Athletico-PR,Cruzeiro
+31,Cuiabá,Corinthians
+31,Criciúma,São Paulo
+32,Internacional,Criciúma
+32,Cruzeiro,Flamengo
+32,Bahia,São Paulo
+32,Fluminense,Grêmio
+32,Botafogo,Vasco da Gama
+32,Corinthians,Palmeiras
+32,RB Bragantino,Cuiabá
+32,Athletico-PR,EC Vitória
+32,Atlético-GO,Atlético-MG
+32,Juventude,Fortaleza
+33,Internacional,Fluminense
+33,Cruzeiro,Criciúma
+33,EC Vitória,Corinthians
+33,Flamengo,Atlético-MG
+33,Botafogo,Cuiabá
+33,Palmeiras,Grêmio
+33,São Paulo,Athletico-PR
+33,Fortaleza,Vasco da Gama
+33,Atlético-GO,RB Bragantino
+33,Juventude,Bahia
+34,Grêmio,Juventude
+34,Atlético-MG,Botafogo
+34,Bahia,Palmeiras
+34,Fluminense,Fortaleza
+34,Vasco da Gama,Internacional
+34,Corinthians,Cruzeiro
+34,RB Bragantino,São Paulo
+34,Athletico-PR,Atlético-GO
+34,Cuiabá,Flamengo
+34,Criciúma,EC Vitória
+35,Internacional,RB Bragantino
+35,Cruzeiro,Grêmio
+35,Bahia,Athletico-PR
+35,Fluminense,Criciúma
+35,Botafogo,EC Vitória
+35,Corinthians,Vasco da Gama
+35,São Paulo,Atlético-MG
+35,Fortaleza,Flamengo
+35,Atlético-GO,Palmeiras
+35,Juventude,Cuiabá
+36,Grêmio,São Paulo
+36,Atlético-MG,Juventude
+36,EC Vitória,Fortaleza
+36,Flamengo,Internacional
+36,Vasco da Gama,Atlético-GO
+36,Palmeiras,Botafogo
+36,RB Bragantino,Cruzeiro
+36,Athletico-PR,Fluminense
+36,Cuiabá,Bahia
+36,Criciúma,Corinthians
+37,Internacional,Botafogo
+37,Cruzeiro,Palmeiras
+37,EC Vitória,Grêmio
+37,Fluminense,Cuiabá
+37,Vasco da Gama,Atlético-MG
+37,Corinthians,Bahia
+37,São Paulo,Juventude
+37,Athletico-PR,RB Bragantino
+37,Atlético-GO,Fortaleza
+37,Criciúma,Flamengo
+38,Grêmio,Corinthians
+38,Atlético-MG,Athletico-PR
+38,Bahia,Atlético-GO
+38,Flamengo,EC Vitória
+38,Botafogo,São Paulo
+38,Palmeiras,Fluminense
+38,RB Bragantino,Criciúma
+38,Fortaleza,Internacional
+38,Cuiabá,Vasco da Gama
+38,Juventude,Cruzeiro
