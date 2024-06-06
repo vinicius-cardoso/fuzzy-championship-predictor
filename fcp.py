@@ -136,19 +136,19 @@ def prever_gols(gols_sim, funcoes_pertinencia):
 
     return gols_sim.output['gols']
 
-# Valores hipotéticos para o campeonato atual (exemplo)
+# Valores para o campeonato atual
 valores_equipe = {
-    'Flamengo': 150, 'Bahia': 90, 'Botafogo': 100, 'São Paulo': 130, 'Athletico-PR': 110,
-    'RB Bragantino': 95, 'Palmeiras': 160, 'Internacional': 120, 'Cruzeiro': 105, 'Atlético-MG': 140,
-    'Fortaleza': 85, 'Grêmio': 125, 'Vasco da Gama': 70, 'Juventude': 60, 'Fluminense': 135,
-    'Criciúma': 65, 'Corinthians': 145, 'Atlético-GO': 75, 'EC Vitória': 80, 'Cuiabá': 55
+    'Flamengo': 166, 'Bahia': 61, 'Botafogo': 70, 'São Paulo': 90, 'Athletico-PR': 67,
+    'RB Bragantino': 75, 'Palmeiras': 220, 'Internacional': 96, 'Cruzeiro': 67, 'Atlético-MG': 86,
+    'Fortaleza': 42, 'Grêmio': 76, 'Vasco da Gama': 69, 'Juventude': 17, 'Fluminense': 110,
+    'Criciúma': 16, 'Corinthians': 109, 'Atlético-GO': 22, 'EC Vitória': 26, 'Cuiabá': 27
 }
 
 idades_equipe = {
-    'Flamengo': 28, 'Bahia': 27, 'Botafogo': 26, 'São Paulo': 29, 'Athletico-PR': 27,
-    'RB Bragantino': 26, 'Palmeiras': 28, 'Internacional': 27, 'Cruzeiro': 26, 'Atlético-MG': 29,
-    'Fortaleza': 27, 'Grêmio': 28, 'Vasco da Gama': 26, 'Juventude': 25, 'Fluminense': 28,
-    'Criciúma': 25, 'Corinthians': 29, 'Atlético-GO': 26, 'EC Vitória': 27, 'Cuiabá': 24
+    'Flamengo': 26, 'Bahia': 28.3, 'Botafogo': 26.9, 'São Paulo': 26.4, 'Athletico-PR': 25.2,
+    'RB Bragantino': 24.1, 'Palmeiras': 25.4, 'Internacional': 27.9, 'Cruzeiro': 25.8, 'Atlético-MG': 26,
+    'Fortaleza': 28.5, 'Grêmio': 27.3, 'Vasco da Gama': 26.8, 'Juventude': 26.9, 'Fluminense': 28,
+    'Criciúma': 28, 'Corinthians': 24.8, 'Atlético-GO': 26.2, 'EC Vitória': 28.3, 'Cuiabá': 25.9
 }
 
 def prever_campeonato_brasileiro():
