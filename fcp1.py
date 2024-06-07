@@ -26,53 +26,6 @@ IDADES_EQUIPES_2024 = {
     'Criciúma': 28, 'Corinthians': 24.8, 'Atlético-GO': 26.2, 'EC Vitória': 28.3, 'Cuiabá': 25.9
 }
 
-# def get_variaveis_fuzzy():
-#     variavies_fuzzy = {
-#         'valor_equipe_mandante': ctrl.Antecedent(np.arange(0, 250, 1), 'valor_equipe_mandante'),
-#         'valor_equipe_visitante': ctrl.Antecedent(np.arange(0, 250, 1), 'valor_equipe_visitante'),
-#         'idade_media_mandante': ctrl.Antecedent(np.arange(20, 40, 0.1), 'idade_media_mandante'),
-#         'idade_media_visitante': ctrl.Antecedent(np.arange(20, 40, 0.1), 'idade_media_visitante'),
-#         'gols': ctrl.Consequent(np.arange(0, 8, 1), 'gols')
-#     }
-
-#     return variavies_fuzzy
-
-# def get_funcao_pertinencia_valor_equipe_mandante(valor_equipe_mandante):
-#     valor_equipe_mandante['baixo'] = fuzz.trimf(valor_equipe_mandante.universe, [0, 0, 100])
-#     valor_equipe_mandante['medio'] = fuzz.trimf(valor_equipe_mandante.universe, [50, 100, 150])
-#     valor_equipe_mandante['alto'] = fuzz.trimf(valor_equipe_mandante.universe, [100, 250, 250])
-
-#     return valor_equipe_mandante
-
-# def get_funcao_pertinencia_valor_equipe_visitante(valor_equipe_visitante):
-#     valor_equipe_visitante['baixo'] = fuzz.trimf(valor_equipe_visitante.universe, [0, 0, 100])
-#     valor_equipe_visitante['medio'] = fuzz.trimf(valor_equipe_visitante.universe, [50, 100, 150])
-#     valor_equipe_visitante['alto'] = fuzz.trimf(valor_equipe_visitante.universe, [100, 250, 250])
-
-#     return valor_equipe_visitante
-
-# def get_funcao_pertinencia_idade_media_mandante(idade_media_mandante):
-#     idade_media_mandante['jovem'] = fuzz.trimf(idade_media_mandante.universe, [20, 20, 25])
-#     idade_media_mandante['media'] = fuzz.trimf(idade_media_mandante.universe, [24, 27, 30])
-#     idade_media_mandante['experiente'] = fuzz.trimf(idade_media_mandante.universe, [28, 40, 40])
-
-#     return idade_media_mandante
-
-# def get_funcao_pertinencia_idade_media_visitante(idade_media_visitante):
-#     idade_media_visitante['jovem'] = fuzz.trimf(idade_media_visitante.universe, [20, 20, 25])
-#     idade_media_visitante['media'] = fuzz.trimf(idade_media_visitante.universe, [24, 27, 30])
-#     idade_media_visitante['experiente'] = fuzz.trimf(idade_media_visitante.universe, [28, 40, 40])
-
-#     return idade_media_visitante
-
-# def get_funcao_pertinencia_gols(gols):
-#     gols['poucos'] = fuzz.trimf(gols.universe, [0, 0, 2])
-#     gols['moderados'] = fuzz.trimf(gols.universe, [0, 2, 4])
-#     gols['muitos'] = fuzz.trimf(gols.universe, [3, 4, 7])
-
-#     return gols
-
-
 # Variáveis fuzzy
 valor_equipe_mandante = ctrl.Antecedent(np.arange(0, 250, 1), 'valor_equipe_mandante')
 valor_equipe_visitante = ctrl.Antecedent(np.arange(0, 250, 1), 'valor_equipe_visitante')
