@@ -1,12 +1,109 @@
+import csv
 import pandas as pd
 import numpy as np
 import skfuzzy as fuzz
 from skfuzzy import control as ctrl
 
-# CSV_DATASET = 'data/brasileirao_serie_a.csv'
+CSV_DATASET = 'data/brasileirao_serie_a.csv'
 
-# df = pd.read_csv(CSV_DATASET)
+# Funções auxiliares
+def get_media_gols_pro_mandante(csv_filename, times_mandantes_especificados):
+    dados_gols = {time: {'soma_gols': 0, 'quantidade_jogos': 0} for time in times_mandantes_especificados}
+    
+    with open(csv_filename, newline='') as csvfile:
+        reader = csv.DictReader(csvfile)
+        
+        for row in reader:
+            time_mandante = row['time_mandante']
+            if time_mandante in times_mandantes_especificados:
+                gols_mandante_str = row['gols_mandante']
+                if gols_mandante_str.isdigit():
+                    gols_mandante = int(gols_mandante_str)
+                    dados_gols[time_mandante]['soma_gols'] += gols_mandante
+                    dados_gols[time_mandante]['quantidade_jogos'] += 1
+    
+    medias_gols = {}
+    for time, dados in dados_gols.items():
+        if dados['quantidade_jogos'] > 0:
+            medias_gols[time] = dados['soma_gols'] / dados['quantidade_jogos']
+        else:
+            medias_gols[time] = 0
+    
+    return medias_gols
 
+def get_media_gols_contra_visitante(csv_filename, times_mandantes_especificados):
+    dados_gols = {time: {'soma_gols': 0, 'quantidade_jogos': 0} for time in times_mandantes_especificados}
+    
+    with open(csv_filename, newline='') as csvfile:
+        reader = csv.DictReader(csvfile)
+        
+        for row in reader:
+            time_visitante = row['time_visitante']
+            if time_visitante in times_mandantes_especificados:
+                gols_mandante_str = row['gols_mandante']
+                if gols_mandante_str.isdigit():
+                    gols_mandante = int(gols_mandante_str)
+                    dados_gols[time_visitante]['soma_gols'] += gols_mandante
+                    dados_gols[time_visitante]['quantidade_jogos'] += 1
+    
+    medias_gols = {}
+    for time, dados in dados_gols.items():
+        if dados['quantidade_jogos'] > 0:
+            medias_gols[time] = dados['soma_gols'] / dados['quantidade_jogos']
+        else:
+            medias_gols[time] = 0
+    
+    return medias_gols
+
+def get_media_gols_contra_mandante(csv_filename, times_visitantes_especificados):
+    dados_gols = {time: {'soma_gols': 0, 'quantidade_jogos': 0} for time in times_visitantes_especificados}
+    
+    with open(csv_filename, newline='') as csvfile:
+        reader = csv.DictReader(csvfile)
+        
+        for row in reader:
+            time_mandante = row['time_mandante']
+            if time_mandante in times_visitantes_especificados:
+                gols_visitante_str = row['gols_visitante']
+                if gols_visitante_str.isdigit():
+                    gols_visitante = int(gols_visitante_str)
+                    dados_gols[time_mandante]['soma_gols'] += gols_visitante
+                    dados_gols[time_mandante]['quantidade_jogos'] += 1
+    
+    medias_gols = {}
+    for time, dados in dados_gols.items():
+        if dados['quantidade_jogos'] > 0:
+            medias_gols[time] = dados['soma_gols'] / dados['quantidade_jogos']
+        else:
+            medias_gols[time] = 0
+    
+    return medias_gols
+
+def get_media_gols_pro_visitante(csv_filename, times_visitantes_especificados):
+    dados_gols = {time: {'soma_gols': 0, 'quantidade_jogos': 0} for time in times_visitantes_especificados}
+    
+    with open(csv_filename, newline='') as csvfile:
+        reader = csv.DictReader(csvfile)
+        
+        for row in reader:
+            time_visitante = row['time_visitante']
+            if time_visitante in times_visitantes_especificados:
+                gols_visitante_str = row['gols_visitante']
+                if gols_visitante_str.isdigit():
+                    gols_visitante = int(gols_visitante_str)
+                    dados_gols[time_visitante]['soma_gols'] += gols_visitante
+                    dados_gols[time_visitante]['quantidade_jogos'] += 1
+    
+    medias_gols = {}
+    for time, dados in dados_gols.items():
+        if dados['quantidade_jogos'] > 0:
+            medias_gols[time] = dados['soma_gols'] / dados['quantidade_jogos']
+        else:
+            medias_gols[time] = 0
+    
+    return medias_gols
+
+# Variáveis globais
 TIMES = [
     'Atlético-GO', 'Atlético-MG', 'Athletico-PR', 'Bahia', 'Botafogo', 
     'RB Bragantino', 'Corinthians', 'Criciúma', 'Cruzeiro', 'Cuiabá', 
@@ -25,12 +122,21 @@ IDADES_EQUIPES_2024 = {
     'Fortaleza': 28.5, 'Grêmio': 27.3, 'Vasco da Gama': 26.8, 'Juventude': 26.9, 'Fluminense': 28,
     'Criciúma': 28, 'Corinthians': 24.8, 'Atlético-GO': 26.2, 'EC Vitória': 28.3, 'Cuiabá': 25.9
 }
+MEDIA_GOLS_PRO_MANDANTES = get_media_gols_pro_mandante(CSV_DATASET, TIMES)
+MEDIA_GOLS_CONTRA_VISITANTES = get_media_gols_contra_visitante(CSV_DATASET, TIMES)
+MEDIA_GOLS_CONTRA_MANDANTES = get_media_gols_contra_mandante(CSV_DATASET, TIMES)
+MEDIA_GOLS_PRO_VISITANTES = get_media_gols_pro_visitante(CSV_DATASET, TIMES)
 
 # Variáveis fuzzy
 valor_equipe_mandante = ctrl.Antecedent(np.arange(0, 250, 1), 'valor_equipe_mandante')
 valor_equipe_visitante = ctrl.Antecedent(np.arange(0, 250, 1), 'valor_equipe_visitante')
 idade_media_mandante = ctrl.Antecedent(np.arange(20, 40, 0.1), 'idade_media_mandante')
 idade_media_visitante = ctrl.Antecedent(np.arange(20, 40, 0.1), 'idade_media_visitante')
+media_gols_pro_mandante = ctrl.Antecedent(np.arange(0, 2.2, 0.05), 'media_gols_pro_mandante')
+media_gols_contra_visitante = ctrl.Antecedent(np.arange(0, 3.5, 0.05), 'media_gols_contra_visitante')
+media_gols_contra_mandante = ctrl.Antecedent(np.arange(0, 2, 0.05), 'media_gols_contra_mandante')
+media_gols_pro_visitante = ctrl.Antecedent(np.arange(0, 1.4, 0.05), 'media_gols_pro_visitante')
+
 gols = ctrl.Consequent(np.arange(0, 8, 1), 'gols')
 
 # Funções de pertinência para valor da equipe mandante
@@ -52,6 +158,26 @@ idade_media_mandante['experiente'] = fuzz.trimf(idade_media_mandante.universe, [
 idade_media_visitante['jovem'] = fuzz.trimf(idade_media_visitante.universe, [20, 20, 25])
 idade_media_visitante['media'] = fuzz.trimf(idade_media_visitante.universe, [24, 27, 30])
 idade_media_visitante['experiente'] = fuzz.trimf(idade_media_visitante.universe, [28, 40, 40])
+
+# Funções de pertinência para media gols pro mandante
+media_gols_pro_mandante['baixa'] = fuzz.trimf(media_gols_pro_mandante.universe, [0, 0.6, 1.2])
+media_gols_pro_mandante['media'] = fuzz.trimf(media_gols_pro_mandante.universe, [1, 1.5, 1.8])
+media_gols_pro_mandante['alta'] = fuzz.trimf(media_gols_pro_mandante.universe, [1.5, 1.85, 2.2])
+
+# Funções de pertinência para media gols contra visitante
+media_gols_contra_visitante['baixa'] = fuzz.trimf(media_gols_contra_visitante.universe, [0, 1, 1.5])
+media_gols_contra_visitante['media'] = fuzz.trimf(media_gols_contra_visitante.universe, [1.3, 1.7, 2])
+media_gols_contra_visitante['alta'] = fuzz.trimf(media_gols_contra_visitante.universe, [1.7, 2.2, 3.5])
+
+# Funções de pertinência para media gols contra mandante
+media_gols_contra_mandante['baixa'] = fuzz.trimf(media_gols_contra_mandante.universe, [0, 0.6, 1])
+media_gols_contra_mandante['media'] = fuzz.trimf(media_gols_contra_mandante.universe, [0.9, 1.1, 1.2])
+media_gols_contra_mandante['alta'] = fuzz.trimf(media_gols_contra_mandante.universe, [1.15, 1.4, 2])
+
+# Funções de pertinência para media gols pro visitante
+media_gols_pro_visitante['baixa'] = fuzz.trimf(media_gols_pro_visitante.universe, [0, 0.4, 1])
+media_gols_pro_visitante['media'] = fuzz.trimf(media_gols_pro_visitante.universe, [0.85, 1, 1.1])
+media_gols_pro_visitante['alta'] = fuzz.trimf(media_gols_pro_visitante.universe, [1, 1.2, 1.4])
 
 # Funções de pertinência para gols
 gols['poucos'] = fuzz.trimf(gols.universe, [0, 0, 2])
@@ -112,12 +238,38 @@ rule34 = ctrl.Rule(idade_media_mandante['jovem'] & idade_media_visitante['experi
 rule35 = ctrl.Rule(idade_media_mandante['jovem'] & idade_media_visitante['media'], gols['moderados'])
 rule36 = ctrl.Rule(idade_media_mandante['jovem'] & idade_media_visitante['jovem'], gols['poucos'])
 
+# Media gols - gols mandante
+rule37 = ctrl.Rule(media_gols_pro_mandante['alta'] & media_gols_contra_visitante['alta'], gols['muitos'])
+rule38 = ctrl.Rule(media_gols_pro_mandante['alta'] & media_gols_contra_visitante['media'], gols['moderados'])
+rule39 = ctrl.Rule(media_gols_pro_mandante['alta'] & media_gols_contra_visitante['baixa'], gols['poucos'])
+
+rule40 = ctrl.Rule(media_gols_pro_mandante['media'] & media_gols_contra_visitante['alta'], gols['moderados'])
+rule41 = ctrl.Rule(media_gols_pro_mandante['media'] & media_gols_contra_visitante['media'], gols['moderados'])
+rule42 = ctrl.Rule(media_gols_pro_mandante['media'] & media_gols_contra_visitante['baixa'], gols['poucos'])
+
+rule43 = ctrl.Rule(media_gols_pro_mandante['baixa'] & media_gols_contra_visitante['alta'], gols['moderados'])
+rule44 = ctrl.Rule(media_gols_pro_mandante['baixa'] & media_gols_contra_visitante['media'], gols['poucos'])
+rule45 = ctrl.Rule(media_gols_pro_mandante['baixa'] & media_gols_contra_visitante['baixa'], gols['poucos'])
+
+# Media gols - gols visitantes
+rule46 = ctrl.Rule(media_gols_contra_mandante['alta'] & media_gols_pro_visitante['alta'], gols['muitos'])
+rule47 = ctrl.Rule(media_gols_contra_mandante['alta'] & media_gols_pro_visitante['media'], gols['moderados'])
+rule48 = ctrl.Rule(media_gols_contra_mandante['alta'] & media_gols_pro_visitante['baixa'], gols['moderados'])
+
+rule49 = ctrl.Rule(media_gols_contra_mandante['media'] & media_gols_pro_visitante['alta'], gols['moderados'])
+rule50 = ctrl.Rule(media_gols_contra_mandante['media'] & media_gols_pro_visitante['media'], gols['moderados'])
+rule51 = ctrl.Rule(media_gols_contra_mandante['media'] & media_gols_pro_visitante['baixa'], gols['poucos'])
+
+rule52 = ctrl.Rule(media_gols_contra_mandante['baixa'] & media_gols_pro_visitante['alta'], gols['poucos'])
+rule53 = ctrl.Rule(media_gols_contra_mandante['baixa'] & media_gols_pro_visitante['media'], gols['poucos'])
+rule54 = ctrl.Rule(media_gols_contra_mandante['baixa'] & media_gols_pro_visitante['baixa'], gols['poucos'])
+
 # Sistema de controle fuzzy mandandte
-sistema_controle_mandante = ctrl.ControlSystem([rule1, rule2, rule3, rule4, rule5, rule6, rule7, rule8, rule9, rule19, rule20, rule21, rule22, rule23, rule24, rule25, rule26, rule27])
+sistema_controle_mandante = ctrl.ControlSystem([rule1, rule2, rule3, rule4, rule5, rule6, rule7, rule8, rule9, rule19, rule20, rule21, rule22, rule23, rule24, rule25, rule26, rule27, rule37, rule38, rule39, rule40, rule41, rule42, rule43, rule44, rule45])
 previsao_gols_mandante = ctrl.ControlSystemSimulation(sistema_controle_mandante)
 
 # Sistema de controle fuzzy visitante
-sistema_controle_visitante = ctrl.ControlSystem([rule10, rule11, rule12, rule13, rule14, rule14, rule15, rule16, rule17, rule18, rule28, rule29, rule30, rule31, rule32, rule33, rule34, rule35, rule36])
+sistema_controle_visitante = ctrl.ControlSystem([rule10, rule11, rule12, rule13, rule14, rule14, rule15, rule16, rule17, rule18, rule28, rule29, rule30, rule31, rule32, rule33, rule34, rule35, rule36, rule46, rule47, rule48, rule49, rule50, rule51, rule52, rule53, rule54])
 previsao_gols_visitante = ctrl.ControlSystemSimulation(sistema_controle_visitante)
 
 resultados = {time: 0 for time in TIMES}
@@ -131,6 +283,10 @@ for time_mandante in TIMES:
             previsao_gols_mandante.input['valor_equipe_visitante'] = VALORES_EQUIPES_2024[time_visitante]
             previsao_gols_mandante.input['idade_media_mandante'] = IDADES_EQUIPES_2024[time_mandante]
             previsao_gols_mandante.input['idade_media_visitante'] = IDADES_EQUIPES_2024[time_visitante]
+
+            previsao_gols_mandante.input['media_gols_pro_mandante'] = MEDIA_GOLS_PRO_MANDANTES[time_visitante]
+            previsao_gols_mandante.input['media_gols_contra_visitante'] = MEDIA_GOLS_CONTRA_VISITANTES[time_visitante]
+
             previsao_gols_mandante.compute()
             
             # Simulando gols do time visitante
@@ -138,6 +294,10 @@ for time_mandante in TIMES:
             previsao_gols_visitante.input['valor_equipe_visitante'] = VALORES_EQUIPES_2024[time_visitante]
             previsao_gols_visitante.input['idade_media_mandante'] = IDADES_EQUIPES_2024[time_mandante]
             previsao_gols_visitante.input['idade_media_visitante'] = IDADES_EQUIPES_2024[time_visitante]
+
+            previsao_gols_visitante.input['media_gols_contra_mandante'] = MEDIA_GOLS_CONTRA_MANDANTES[time_visitante]
+            previsao_gols_visitante.input['media_gols_pro_visitante'] = MEDIA_GOLS_PRO_VISITANTES[time_visitante]
+
             previsao_gols_visitante.compute()
             
             # Resultado da simulação
@@ -156,5 +316,13 @@ for time_mandante in TIMES:
 # Determinação do campeão
 campeao = max(resultados, key=resultados.get)
 
-print("O campeão do Campeonato Brasileiro 2024 é:", campeao)
+# Ordenação dos resultados
+resultados_ordenados = dict(sorted(resultados.items(), key=lambda item: item[1], reverse=True))
+
+# Exibição da tabela final
+print("Tabela Final do Campeonato Brasileiro 2024:")
+for time, pontos in resultados_ordenados.items():
+    print(f"{time}: {pontos} pontos")
+
+print("\nO campeão do Campeonato Brasileiro 2024 é:", campeao)
 print("Pontuação final:", resultados[campeao])
