@@ -139,6 +139,154 @@ def get_media_gols_pro_visitante(csv_filename, times_visitantes_especificados, a
     
     return medias_gols
 
+def get_percentual_vitorias_mandante(csv_filename, times_mandantes_especificados, ano_inicio, ano_fim):
+    dados_vitorias_especificado = {time: {'vitorias': 0, 'quantidade_jogos': 0} for time in times_mandantes_especificados}
+    dados_vitorias_total = {time: {'vitorias': 0, 'quantidade_jogos': 0} for time in times_mandantes_especificados}
+    
+    with open(csv_filename, newline='') as csvfile:
+        reader = csv.DictReader(csvfile)
+        
+        for row in reader:
+            time_mandante = row['time_mandante']
+            ano_campeonato_str = row['ano_campeonato']
+            if time_mandante in times_mandantes_especificados and ano_campeonato_str.isdigit():
+                ano_campeonato = int(ano_campeonato_str)
+                gols_mandante_str = row['gols_mandante']
+                gols_visitante_str = row['gols_visitante']
+                if gols_mandante_str.isdigit() and gols_visitante_str.isdigit():
+                    gols_mandante = int(gols_mandante_str)
+                    gols_visitante = int(gols_visitante_str)
+                    if ano_inicio <= ano_campeonato <= ano_fim:
+                        dados_vitorias_especificado[time_mandante]['quantidade_jogos'] += 1
+                        if gols_mandante > gols_visitante:
+                            dados_vitorias_especificado[time_mandante]['vitorias'] += 1
+                    if 2003 <= ano_campeonato <= 2023:
+                        dados_vitorias_total[time_mandante]['quantidade_jogos'] += 1
+                        if gols_mandante > gols_visitante:
+                            dados_vitorias_total[time_mandante]['vitorias'] += 1
+    
+    percentual_vitorias = {}
+    for time in times_mandantes_especificados:
+        if dados_vitorias_especificado[time]['quantidade_jogos'] > 0:
+            percentual_vitorias[time] = (dados_vitorias_especificado[time]['vitorias'] / dados_vitorias_especificado[time]['quantidade_jogos']) * 100
+        elif dados_vitorias_total[time]['quantidade_jogos'] > 0:
+            percentual_vitorias[time] = (dados_vitorias_total[time]['vitorias'] / dados_vitorias_total[time]['quantidade_jogos']) * 100
+        else:
+            percentual_vitorias[time] = 0.0
+    
+    return percentual_vitorias
+
+def get_percentual_vitorias_visitante(csv_filename, times_visitantes_especificados, ano_inicio, ano_fim):
+    dados_vitorias_especificado = {time: {'vitorias': 0, 'quantidade_jogos': 0} for time in times_visitantes_especificados}
+    dados_vitorias_total = {time: {'vitorias': 0, 'quantidade_jogos': 0} for time in times_visitantes_especificados}
+    
+    with open(csv_filename, newline='') as csvfile:
+        reader = csv.DictReader(csvfile)
+        
+        for row in reader:
+            time_visitante = row['time_visitante']
+            ano_campeonato_str = row['ano_campeonato']
+            if time_visitante in times_visitantes_especificados and ano_campeonato_str.isdigit():
+                ano_campeonato = int(ano_campeonato_str)
+                gols_mandante_str = row['gols_mandante']
+                gols_visitante_str = row['gols_visitante']
+                if gols_mandante_str.isdigit() and gols_visitante_str.isdigit():
+                    gols_mandante = int(gols_mandante_str)
+                    gols_visitante = int(gols_visitante_str)
+                    if ano_inicio <= ano_campeonato <= ano_fim:
+                        dados_vitorias_especificado[time_visitante]['quantidade_jogos'] += 1
+                        if gols_visitante > gols_mandante:
+                            dados_vitorias_especificado[time_visitante]['vitorias'] += 1
+                    if 2003 <= ano_campeonato <= 2023:
+                        dados_vitorias_total[time_visitante]['quantidade_jogos'] += 1
+                        if gols_visitante > gols_mandante:
+                            dados_vitorias_total[time_visitante]['vitorias'] += 1
+    
+    percentual_vitorias = {}
+    for time in times_visitantes_especificados:
+        if dados_vitorias_especificado[time]['quantidade_jogos'] > 0:
+            percentual_vitorias[time] = (dados_vitorias_especificado[time]['vitorias'] / dados_vitorias_especificado[time]['quantidade_jogos']) * 100
+        elif dados_vitorias_total[time]['quantidade_jogos'] > 0:
+            percentual_vitorias[time] = (dados_vitorias_total[time]['vitorias'] / dados_vitorias_total[time]['quantidade_jogos']) * 100
+        else:
+            percentual_vitorias[time] = 0.0
+    
+    return percentual_vitorias
+
+def get_percentual_derrotas_mandante(csv_filename, times_mandantes_especificados, ano_inicio, ano_fim):
+    dados_derrotas_especificado = {time: {'derrotas': 0, 'quantidade_jogos': 0} for time in times_mandantes_especificados}
+    dados_derrotas_total = {time: {'derrotas': 0, 'quantidade_jogos': 0} for time in times_mandantes_especificados}
+    
+    with open(csv_filename, newline='') as csvfile:
+        reader = csv.DictReader(csvfile)
+        
+        for row in reader:
+            time_mandante = row['time_mandante']
+            ano_campeonato_str = row['ano_campeonato']
+            if time_mandante in times_mandantes_especificados and ano_campeonato_str.isdigit():
+                ano_campeonato = int(ano_campeonato_str)
+                gols_mandante_str = row['gols_mandante']
+                gols_visitante_str = row['gols_visitante']
+                if gols_mandante_str.isdigit() and gols_visitante_str.isdigit():
+                    gols_mandante = int(gols_mandante_str)
+                    gols_visitante = int(gols_visitante_str)
+                    if ano_inicio <= ano_campeonato <= ano_fim:
+                        dados_derrotas_especificado[time_mandante]['quantidade_jogos'] += 1
+                        if gols_mandante < gols_visitante:
+                            dados_derrotas_especificado[time_mandante]['derrotas'] += 1
+                    if 2003 <= ano_campeonato <= 2023:
+                        dados_derrotas_total[time_mandante]['quantidade_jogos'] += 1
+                        if gols_mandante < gols_visitante:
+                            dados_derrotas_total[time_mandante]['derrotas'] += 1
+    
+    percentual_derrotas = {}
+    for time in times_mandantes_especificados:
+        if dados_derrotas_especificado[time]['quantidade_jogos'] > 0:
+            percentual_derrotas[time] = (dados_derrotas_especificado[time]['derrotas'] / dados_derrotas_especificado[time]['quantidade_jogos']) * 100
+        elif dados_derrotas_total[time]['quantidade_jogos'] > 0:
+            percentual_derrotas[time] = (dados_derrotas_total[time]['derrotas'] / dados_derrotas_total[time]['quantidade_jogos']) * 100
+        else:
+            percentual_derrotas[time] = 0.0
+    
+    return percentual_derrotas
+
+def get_percentual_derrotas_visitante(csv_filename, times_visitantes_especificados, ano_inicio, ano_fim):
+    dados_derrotas_especificado = {time: {'derrotas': 0, 'quantidade_jogos': 0} for time in times_visitantes_especificados}
+    dados_derrotas_total = {time: {'derrotas': 0, 'quantidade_jogos': 0} for time in times_visitantes_especificados}
+    
+    with open(csv_filename, newline='') as csvfile:
+        reader = csv.DictReader(csvfile)
+        
+        for row in reader:
+            time_visitante = row['time_visitante']
+            ano_campeonato_str = row['ano_campeonato']
+            if time_visitante in times_visitantes_especificados and ano_campeonato_str.isdigit():
+                ano_campeonato = int(ano_campeonato_str)
+                gols_mandante_str = row['gols_mandante']
+                gols_visitante_str = row['gols_visitante']
+                if gols_mandante_str.isdigit() and gols_visitante_str.isdigit():
+                    gols_mandante = int(gols_mandante_str)
+                    gols_visitante = int(gols_visitante_str)
+                    if ano_inicio <= ano_campeonato <= ano_fim:
+                        dados_derrotas_especificado[time_visitante]['quantidade_jogos'] += 1
+                        if gols_visitante < gols_mandante:
+                            dados_derrotas_especificado[time_visitante]['derrotas'] += 1
+                    if 2003 <= ano_campeonato <= 2023:
+                        dados_derrotas_total[time_visitante]['quantidade_jogos'] += 1
+                        if gols_visitante < gols_mandante:
+                            dados_derrotas_total[time_visitante]['derrotas'] += 1
+    
+    percentual_derrotas = {}
+    for time in times_visitantes_especificados:
+        if dados_derrotas_especificado[time]['quantidade_jogos'] > 0:
+            percentual_derrotas[time] = (dados_derrotas_especificado[time]['derrotas'] / dados_derrotas_especificado[time]['quantidade_jogos']) * 100
+        elif dados_derrotas_total[time]['quantidade_jogos'] > 0:
+            percentual_derrotas[time] = (dados_derrotas_total[time]['derrotas'] / dados_derrotas_total[time]['quantidade_jogos']) * 100
+        else:
+            percentual_derrotas[time] = 0.0
+    
+    return percentual_derrotas
+
 # Variáveis globais
 TIMES = [
     'Atlético-GO', 'Atlético-MG', 'Athletico-PR', 'EC Bahia', 'Botafogo', 
@@ -166,6 +314,10 @@ MEDIA_GOLS_PRO_MANDANTES = get_media_gols_pro_mandante(CSV_DATASET, TIMES, ano_i
 MEDIA_GOLS_CONTRA_VISITANTES = get_media_gols_contra_visitante(CSV_DATASET, TIMES, ano_inicio, ano_fim)
 MEDIA_GOLS_CONTRA_MANDANTES = get_media_gols_contra_mandante(CSV_DATASET, TIMES, ano_inicio, ano_fim)
 MEDIA_GOLS_PRO_VISITANTES = get_media_gols_pro_visitante(CSV_DATASET, TIMES, ano_inicio, ano_fim)
+PERCENTUAL_VITORIAS_MANDANTE = get_percentual_vitorias_mandante(CSV_DATASET, TIMES, ano_inicio, ano_fim)
+PERCENTUAL_DERROTAS_MANDANTE = get_percentual_derrotas_mandante(CSV_DATASET, TIMES, ano_inicio, ano_fim)
+PERCENTUAL_VITORIAS_VISITANTE = get_percentual_vitorias_visitante(CSV_DATASET, TIMES, ano_inicio, ano_fim)
+PERCENTUAL_DERROTAS_VISITANTE = get_percentual_derrotas_visitante(CSV_DATASET, TIMES, ano_inicio, ano_fim)
 
 # Variáveis fuzzy
 valor_equipe_mandante = ctrl.Antecedent(np.arange(0, 221, 1), 'valor_equipe_mandante')
@@ -176,6 +328,7 @@ media_gols_pro_mandante = ctrl.Antecedent(np.arange(0, 2.2, 0.05), 'media_gols_p
 media_gols_contra_visitante = ctrl.Antecedent(np.arange(0, 3.5, 0.05), 'media_gols_contra_visitante')
 media_gols_contra_mandante = ctrl.Antecedent(np.arange(0, 2, 0.05), 'media_gols_contra_mandante')
 media_gols_pro_visitante = ctrl.Antecedent(np.arange(0, 1.4, 0.05), 'media_gols_pro_visitante')
+percentual_vitorias_mandante = ctrl.Antecedent(np.arange(0, 81, 0.5), 'percentual_vitorias_mandante')
 
 gols = ctrl.Consequent(np.arange(0, 8, 1), 'gols')
 
@@ -218,6 +371,11 @@ media_gols_contra_mandante['alta'] = fuzz.trimf(media_gols_contra_mandante.unive
 media_gols_pro_visitante['baixa'] = fuzz.trimf(media_gols_pro_visitante.universe, [0, 0.4, 1])
 media_gols_pro_visitante['media'] = fuzz.trimf(media_gols_pro_visitante.universe, [0.85, 1, 1.1])
 media_gols_pro_visitante['alta'] = fuzz.trimf(media_gols_pro_visitante.universe, [1, 1.2, 1.4])
+
+# Funções de pertinência para percentual vitorias mandante
+percentual_vitorias_mandante['baixo'] = fuzz.trimf(percentual_vitorias_mandante.universe, [0, 32, 46])
+percentual_vitorias_mandante['medio'] = fuzz.trimf(percentual_vitorias_mandante.universe, [35, 50, 60])
+percentual_vitorias_mandante['alto'] = fuzz.trimf(percentual_vitorias_mandante.universe, [52, 60, 80])
 
 # Funções de pertinência para gols
 gols['poucos'] = fuzz.trimf(gols.universe, [0, 0, 2])
