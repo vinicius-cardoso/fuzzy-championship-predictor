@@ -159,8 +159,8 @@ IDADES_EQUIPES_2024 = {
     'Criciúma EC': 28, 'Corinthians': 24.8, 'Atlético-GO': 26.2, 'EC Vitória': 28.3, 'Cuiabá-MT': 25.9
 }
 
-ano_inicio = 2003
-ano_fim = 2023
+ano_inicio = 2006
+ano_fim = 2009
 
 MEDIA_GOLS_PRO_MANDANTES = get_media_gols_pro_mandante(CSV_DATASET, TIMES, ano_inicio, ano_fim)
 MEDIA_GOLS_CONTRA_VISITANTES = get_media_gols_contra_visitante(CSV_DATASET, TIMES, ano_inicio, ano_fim)
@@ -168,10 +168,10 @@ MEDIA_GOLS_CONTRA_MANDANTES = get_media_gols_contra_mandante(CSV_DATASET, TIMES,
 MEDIA_GOLS_PRO_VISITANTES = get_media_gols_pro_visitante(CSV_DATASET, TIMES, ano_inicio, ano_fim)
 
 # Variáveis fuzzy
-valor_equipe_mandante = ctrl.Antecedent(np.arange(0, 250, 1), 'valor_equipe_mandante')
-valor_equipe_visitante = ctrl.Antecedent(np.arange(0, 250, 1), 'valor_equipe_visitante')
-idade_media_mandante = ctrl.Antecedent(np.arange(20, 40, 0.1), 'idade_media_mandante')
-idade_media_visitante = ctrl.Antecedent(np.arange(20, 40, 0.1), 'idade_media_visitante')
+valor_equipe_mandante = ctrl.Antecedent(np.arange(0, 221, 1), 'valor_equipe_mandante')
+valor_equipe_visitante = ctrl.Antecedent(np.arange(0, 221, 1), 'valor_equipe_visitante')
+idade_media_mandante = ctrl.Antecedent(np.arange(20, 31, 0.1), 'idade_media_mandante')
+idade_media_visitante = ctrl.Antecedent(np.arange(20, 31, 0.1), 'idade_media_visitante')
 media_gols_pro_mandante = ctrl.Antecedent(np.arange(0, 2.2, 0.05), 'media_gols_pro_mandante')
 media_gols_contra_visitante = ctrl.Antecedent(np.arange(0, 3.5, 0.05), 'media_gols_contra_visitante')
 media_gols_contra_mandante = ctrl.Antecedent(np.arange(0, 2, 0.05), 'media_gols_contra_mandante')
@@ -180,24 +180,24 @@ media_gols_pro_visitante = ctrl.Antecedent(np.arange(0, 1.4, 0.05), 'media_gols_
 gols = ctrl.Consequent(np.arange(0, 8, 1), 'gols')
 
 # Funções de pertinência para valor da equipe mandante
-valor_equipe_mandante['baixo'] = fuzz.trimf(valor_equipe_mandante.universe, [0, 0, 100])
-valor_equipe_mandante['medio'] = fuzz.trimf(valor_equipe_mandante.universe, [50, 100, 150])
-valor_equipe_mandante['alto'] = fuzz.trimf(valor_equipe_mandante.universe, [100, 250, 250])
+valor_equipe_mandante['baixo'] = fuzz.trimf(valor_equipe_mandante.universe, [0, 30, 70])
+valor_equipe_mandante['medio'] = fuzz.trimf(valor_equipe_mandante.universe, [40, 100, 110])
+valor_equipe_mandante['alto'] = fuzz.trimf(valor_equipe_mandante.universe, [90, 150, 220])
 
 # Funções de pertinência para valor da equipe visitante
-valor_equipe_visitante['baixo'] = fuzz.trimf(valor_equipe_visitante.universe, [0, 0, 100])
-valor_equipe_visitante['medio'] = fuzz.trimf(valor_equipe_visitante.universe, [50, 100, 150])
-valor_equipe_visitante['alto'] = fuzz.trimf(valor_equipe_visitante.universe, [100, 250, 250])
+valor_equipe_visitante['baixo'] = fuzz.trimf(valor_equipe_visitante.universe, [0, 30, 70])
+valor_equipe_visitante['medio'] = fuzz.trimf(valor_equipe_visitante.universe, [40, 100, 110])
+valor_equipe_visitante['alto'] = fuzz.trimf(valor_equipe_visitante.universe, [90, 150, 220])
 
 # Funções de pertinência para idade média mandante
-idade_media_mandante['jovem'] = fuzz.trimf(idade_media_mandante.universe, [20, 20, 25])
-idade_media_mandante['media'] = fuzz.trimf(idade_media_mandante.universe, [24, 27, 30])
-idade_media_mandante['experiente'] = fuzz.trimf(idade_media_mandante.universe, [28, 40, 40])
+idade_media_mandante['jovem'] = fuzz.trimf(idade_media_mandante.universe, [20, 20, 23])
+idade_media_mandante['media'] = fuzz.trimf(idade_media_mandante.universe, [23, 25, 27])
+idade_media_mandante['experiente'] = fuzz.trimf(idade_media_mandante.universe, [26, 29, 31])
 
 # Funções de pertinência para idade média visitante
-idade_media_visitante['jovem'] = fuzz.trimf(idade_media_visitante.universe, [20, 20, 25])
-idade_media_visitante['media'] = fuzz.trimf(idade_media_visitante.universe, [24, 27, 30])
-idade_media_visitante['experiente'] = fuzz.trimf(idade_media_visitante.universe, [28, 40, 40])
+idade_media_visitante['jovem'] = fuzz.trimf(idade_media_visitante.universe, [20, 20, 23])
+idade_media_visitante['media'] = fuzz.trimf(idade_media_visitante.universe, [23, 25, 27])
+idade_media_visitante['experiente'] = fuzz.trimf(idade_media_visitante.universe, [26, 29, 31])
 
 # Funções de pertinência para media gols pro mandante
 media_gols_pro_mandante['baixa'] = fuzz.trimf(media_gols_pro_mandante.universe, [0, 0.6, 1.2])
@@ -303,6 +303,7 @@ rule51 = ctrl.Rule(media_gols_contra_mandante['media'] & media_gols_pro_visitant
 rule52 = ctrl.Rule(media_gols_contra_mandante['baixa'] & media_gols_pro_visitante['alta'], gols['poucos'])
 rule53 = ctrl.Rule(media_gols_contra_mandante['baixa'] & media_gols_pro_visitante['media'], gols['poucos'])
 rule54 = ctrl.Rule(media_gols_contra_mandante['baixa'] & media_gols_pro_visitante['baixa'], gols['poucos'])
+
 
 # Sistema de controle fuzzy mandandte
 sistema_controle_mandante = ctrl.ControlSystem([rule1, rule2, rule3, rule4, rule5, rule6, rule7, rule8, rule9, rule19, rule20, rule21, rule22, rule23, rule24, rule25, rule26, rule27, rule37, rule38, rule39, rule40, rule41, rule42, rule43, rule44, rule45])
