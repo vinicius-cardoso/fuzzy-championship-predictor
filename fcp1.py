@@ -4,100 +4,136 @@ import numpy as np
 import skfuzzy as fuzz
 from skfuzzy import control as ctrl
 
-CSV_DATASET = 'data/brasileirao_serie_a.csv'
+CSV_DATASET = 'brasileirao_serie_a.csv'
 
 # Funções auxiliares
-def get_media_gols_pro_mandante(csv_filename, times_mandantes_especificados):
-    dados_gols = {time: {'soma_gols': 0, 'quantidade_jogos': 0} for time in times_mandantes_especificados}
+def get_media_gols_pro_mandante(csv_filename, times_mandantes_especificados, ano_inicio, ano_fim):
+    dados_gols_especificado = {time: {'soma_gols': 0, 'quantidade_jogos': 0} for time in times_mandantes_especificados}
+    dados_gols_total = {time: {'soma_gols': 0, 'quantidade_jogos': 0} for time in times_mandantes_especificados}
     
     with open(csv_filename, newline='') as csvfile:
         reader = csv.DictReader(csvfile)
         
         for row in reader:
             time_mandante = row['time_mandante']
-            if time_mandante in times_mandantes_especificados:
+            ano_campeonato_str = row['ano_campeonato']
+            if time_mandante in times_mandantes_especificados and ano_campeonato_str.isdigit():
+                ano_campeonato = int(ano_campeonato_str)
                 gols_mandante_str = row['gols_mandante']
                 if gols_mandante_str.isdigit():
                     gols_mandante = int(gols_mandante_str)
-                    dados_gols[time_mandante]['soma_gols'] += gols_mandante
-                    dados_gols[time_mandante]['quantidade_jogos'] += 1
+                    if ano_inicio <= ano_campeonato <= ano_fim:
+                        dados_gols_especificado[time_mandante]['soma_gols'] += gols_mandante
+                        dados_gols_especificado[time_mandante]['quantidade_jogos'] += 1
+                    if 2003 <= ano_campeonato <= 2023:
+                        dados_gols_total[time_mandante]['soma_gols'] += gols_mandante
+                        dados_gols_total[time_mandante]['quantidade_jogos'] += 1
     
     medias_gols = {}
-    for time, dados in dados_gols.items():
-        if dados['quantidade_jogos'] > 0:
-            medias_gols[time] = dados['soma_gols'] / dados['quantidade_jogos']
+    for time in times_mandantes_especificados:
+        if dados_gols_especificado[time]['quantidade_jogos'] > 0:
+            medias_gols[time] = dados_gols_especificado[time]['soma_gols'] / dados_gols_especificado[time]['quantidade_jogos']
+        elif dados_gols_total[time]['quantidade_jogos'] > 0:
+            medias_gols[time] = dados_gols_total[time]['soma_gols'] / dados_gols_total[time]['quantidade_jogos']
         else:
             medias_gols[time] = 0
     
     return medias_gols
 
-def get_media_gols_contra_visitante(csv_filename, times_mandantes_especificados):
-    dados_gols = {time: {'soma_gols': 0, 'quantidade_jogos': 0} for time in times_mandantes_especificados}
+def get_media_gols_contra_visitante(csv_filename, times_mandantes_especificados, ano_inicio, ano_fim):
+    dados_gols_especificado = {time: {'soma_gols': 0, 'quantidade_jogos': 0} for time in times_mandantes_especificados}
+    dados_gols_total = {time: {'soma_gols': 0, 'quantidade_jogos': 0} for time in times_mandantes_especificados}
     
     with open(csv_filename, newline='') as csvfile:
         reader = csv.DictReader(csvfile)
         
         for row in reader:
             time_visitante = row['time_visitante']
-            if time_visitante in times_mandantes_especificados:
+            ano_campeonato_str = row['ano_campeonato']
+            if time_visitante in times_mandantes_especificados and ano_campeonato_str.isdigit():
+                ano_campeonato = int(ano_campeonato_str)
                 gols_mandante_str = row['gols_mandante']
                 if gols_mandante_str.isdigit():
                     gols_mandante = int(gols_mandante_str)
-                    dados_gols[time_visitante]['soma_gols'] += gols_mandante
-                    dados_gols[time_visitante]['quantidade_jogos'] += 1
+                    if ano_inicio <= ano_campeonato <= ano_fim:
+                        dados_gols_especificado[time_visitante]['soma_gols'] += gols_mandante
+                        dados_gols_especificado[time_visitante]['quantidade_jogos'] += 1
+                    if 2003 <= ano_campeonato <= 2023:
+                        dados_gols_total[time_visitante]['soma_gols'] += gols_mandante
+                        dados_gols_total[time_visitante]['quantidade_jogos'] += 1
     
     medias_gols = {}
-    for time, dados in dados_gols.items():
-        if dados['quantidade_jogos'] > 0:
-            medias_gols[time] = dados['soma_gols'] / dados['quantidade_jogos']
+    for time in times_mandantes_especificados:
+        if dados_gols_especificado[time]['quantidade_jogos'] > 0:
+            medias_gols[time] = dados_gols_especificado[time]['soma_gols'] / dados_gols_especificado[time]['quantidade_jogos']
+        elif dados_gols_total[time]['quantidade_jogos'] > 0:
+            medias_gols[time] = dados_gols_total[time]['soma_gols'] / dados_gols_total[time]['quantidade_jogos']
         else:
             medias_gols[time] = 0
     
     return medias_gols
 
-def get_media_gols_contra_mandante(csv_filename, times_visitantes_especificados):
-    dados_gols = {time: {'soma_gols': 0, 'quantidade_jogos': 0} for time in times_visitantes_especificados}
+def get_media_gols_contra_mandante(csv_filename, times_visitantes_especificados, ano_inicio, ano_fim):
+    dados_gols_especificado = {time: {'soma_gols': 0, 'quantidade_jogos': 0} for time in times_visitantes_especificados}
+    dados_gols_total = {time: {'soma_gols': 0, 'quantidade_jogos': 0} for time in times_visitantes_especificados}
     
     with open(csv_filename, newline='') as csvfile:
         reader = csv.DictReader(csvfile)
         
         for row in reader:
             time_mandante = row['time_mandante']
-            if time_mandante in times_visitantes_especificados:
+            ano_campeonato_str = row['ano_campeonato']
+            if time_mandante in times_visitantes_especificados and ano_campeonato_str.isdigit():
+                ano_campeonato = int(ano_campeonato_str)
                 gols_visitante_str = row['gols_visitante']
                 if gols_visitante_str.isdigit():
                     gols_visitante = int(gols_visitante_str)
-                    dados_gols[time_mandante]['soma_gols'] += gols_visitante
-                    dados_gols[time_mandante]['quantidade_jogos'] += 1
+                    if ano_inicio <= ano_campeonato <= ano_fim:
+                        dados_gols_especificado[time_mandante]['soma_gols'] += gols_visitante
+                        dados_gols_especificado[time_mandante]['quantidade_jogos'] += 1
+                    if 2003 <= ano_campeonato <= 2023:
+                        dados_gols_total[time_mandante]['soma_gols'] += gols_visitante
+                        dados_gols_total[time_mandante]['quantidade_jogos'] += 1
     
     medias_gols = {}
-    for time, dados in dados_gols.items():
-        if dados['quantidade_jogos'] > 0:
-            medias_gols[time] = dados['soma_gols'] / dados['quantidade_jogos']
+    for time in times_visitantes_especificados:
+        if dados_gols_especificado[time]['quantidade_jogos'] > 0:
+            medias_gols[time] = dados_gols_especificado[time]['soma_gols'] / dados_gols_especificado[time]['quantidade_jogos']
+        elif dados_gols_total[time]['quantidade_jogos'] > 0:
+            medias_gols[time] = dados_gols_total[time]['soma_gols'] / dados_gols_total[time]['quantidade_jogos']
         else:
             medias_gols[time] = 0
     
     return medias_gols
 
-def get_media_gols_pro_visitante(csv_filename, times_visitantes_especificados):
-    dados_gols = {time: {'soma_gols': 0, 'quantidade_jogos': 0} for time in times_visitantes_especificados}
+def get_media_gols_pro_visitante(csv_filename, times_visitantes_especificados, ano_inicio, ano_fim):
+    dados_gols_especificado = {time: {'soma_gols': 0, 'quantidade_jogos': 0} for time in times_visitantes_especificados}
+    dados_gols_total = {time: {'soma_gols': 0, 'quantidade_jogos': 0} for time in times_visitantes_especificados}
     
     with open(csv_filename, newline='') as csvfile:
         reader = csv.DictReader(csvfile)
         
         for row in reader:
             time_visitante = row['time_visitante']
-            if time_visitante in times_visitantes_especificados:
+            ano_campeonato_str = row['ano_campeonato']
+            if time_visitante in times_visitantes_especificados and ano_campeonato_str.isdigit():
+                ano_campeonato = int(ano_campeonato_str)
                 gols_visitante_str = row['gols_visitante']
                 if gols_visitante_str.isdigit():
                     gols_visitante = int(gols_visitante_str)
-                    dados_gols[time_visitante]['soma_gols'] += gols_visitante
-                    dados_gols[time_visitante]['quantidade_jogos'] += 1
+                    if ano_inicio <= ano_campeonato <= ano_fim:
+                        dados_gols_especificado[time_visitante]['soma_gols'] += gols_visitante
+                        dados_gols_especificado[time_visitante]['quantidade_jogos'] += 1
+                    if 2003 <= ano_campeonato <= 2023:
+                        dados_gols_total[time_visitante]['soma_gols'] += gols_visitante
+                        dados_gols_total[time_visitante]['quantidade_jogos'] += 1
     
     medias_gols = {}
-    for time, dados in dados_gols.items():
-        if dados['quantidade_jogos'] > 0:
-            medias_gols[time] = dados['soma_gols'] / dados['quantidade_jogos']
+    for time in times_visitantes_especificados:
+        if dados_gols_especificado[time]['quantidade_jogos'] > 0:
+            medias_gols[time] = dados_gols_especificado[time]['soma_gols'] / dados_gols_especificado[time]['quantidade_jogos']
+        elif dados_gols_total[time]['quantidade_jogos'] > 0:
+            medias_gols[time] = dados_gols_total[time]['soma_gols'] / dados_gols_total[time]['quantidade_jogos']
         else:
             medias_gols[time] = 0
     
@@ -105,27 +141,31 @@ def get_media_gols_pro_visitante(csv_filename, times_visitantes_especificados):
 
 # Variáveis globais
 TIMES = [
-    'Atlético-GO', 'Atlético-MG', 'Athletico-PR', 'Bahia', 'Botafogo', 
-    'RB Bragantino', 'Corinthians', 'Criciúma', 'Cruzeiro', 'Cuiabá', 
+    'Atlético-GO', 'Atlético-MG', 'Athletico-PR', 'EC Bahia', 'Botafogo', 
+    'RB Bragantino', 'Corinthians', 'Criciúma EC', 'Cruzeiro', 'Cuiabá-MT', 
     'Flamengo', 'Fluminense', 'Fortaleza', 'Grêmio', 'Internacional', 
     'Juventude', 'Palmeiras', 'São Paulo', 'Vasco da Gama', 'EC Vitória'
 ]
 VALORES_EQUIPES_2024 = {
-    'Flamengo': 166, 'Bahia': 61, 'Botafogo': 70, 'São Paulo': 90, 'Athletico-PR': 67,
+    'Flamengo': 166, 'EC Bahia': 61, 'Botafogo': 70, 'São Paulo': 90, 'Athletico-PR': 67,
     'RB Bragantino': 75, 'Palmeiras': 220, 'Internacional': 96, 'Cruzeiro': 67, 'Atlético-MG': 86,
     'Fortaleza': 42, 'Grêmio': 76, 'Vasco da Gama': 69, 'Juventude': 17, 'Fluminense': 110,
-    'Criciúma': 16, 'Corinthians': 109, 'Atlético-GO': 22, 'EC Vitória': 26, 'Cuiabá': 27
+    'Criciúma EC': 16, 'Corinthians': 109, 'Atlético-GO': 22, 'EC Vitória': 26, 'Cuiabá-MT': 27
 }
 IDADES_EQUIPES_2024 = {
-    'Flamengo': 26, 'Bahia': 28.3, 'Botafogo': 26.9, 'São Paulo': 26.4, 'Athletico-PR': 25.2,
+    'Flamengo': 26, 'EC Bahia': 28.3, 'Botafogo': 26.9, 'São Paulo': 26.4, 'Athletico-PR': 25.2,
     'RB Bragantino': 24.1, 'Palmeiras': 25.4, 'Internacional': 27.9, 'Cruzeiro': 25.8, 'Atlético-MG': 26,
     'Fortaleza': 28.5, 'Grêmio': 27.3, 'Vasco da Gama': 26.8, 'Juventude': 26.9, 'Fluminense': 28,
-    'Criciúma': 28, 'Corinthians': 24.8, 'Atlético-GO': 26.2, 'EC Vitória': 28.3, 'Cuiabá': 25.9
+    'Criciúma EC': 28, 'Corinthians': 24.8, 'Atlético-GO': 26.2, 'EC Vitória': 28.3, 'Cuiabá-MT': 25.9
 }
-MEDIA_GOLS_PRO_MANDANTES = get_media_gols_pro_mandante(CSV_DATASET, TIMES)
-MEDIA_GOLS_CONTRA_VISITANTES = get_media_gols_contra_visitante(CSV_DATASET, TIMES)
-MEDIA_GOLS_CONTRA_MANDANTES = get_media_gols_contra_mandante(CSV_DATASET, TIMES)
-MEDIA_GOLS_PRO_VISITANTES = get_media_gols_pro_visitante(CSV_DATASET, TIMES)
+
+ano_inicio = 2003
+ano_fim = 2023
+
+MEDIA_GOLS_PRO_MANDANTES = get_media_gols_pro_mandante(CSV_DATASET, TIMES, ano_inicio, ano_fim)
+MEDIA_GOLS_CONTRA_VISITANTES = get_media_gols_contra_visitante(CSV_DATASET, TIMES, ano_inicio, ano_fim)
+MEDIA_GOLS_CONTRA_MANDANTES = get_media_gols_contra_mandante(CSV_DATASET, TIMES, ano_inicio, ano_fim)
+MEDIA_GOLS_PRO_VISITANTES = get_media_gols_pro_visitante(CSV_DATASET, TIMES, ano_inicio, ano_fim)
 
 # Variáveis fuzzy
 valor_equipe_mandante = ctrl.Antecedent(np.arange(0, 250, 1), 'valor_equipe_mandante')
@@ -284,7 +324,7 @@ for time_mandante in TIMES:
             previsao_gols_mandante.input['idade_media_mandante'] = IDADES_EQUIPES_2024[time_mandante]
             previsao_gols_mandante.input['idade_media_visitante'] = IDADES_EQUIPES_2024[time_visitante]
 
-            previsao_gols_mandante.input['media_gols_pro_mandante'] = MEDIA_GOLS_PRO_MANDANTES[time_visitante]
+            previsao_gols_mandante.input['media_gols_pro_mandante'] = MEDIA_GOLS_PRO_MANDANTES[time_mandante]
             previsao_gols_mandante.input['media_gols_contra_visitante'] = MEDIA_GOLS_CONTRA_VISITANTES[time_visitante]
 
             previsao_gols_mandante.compute()
@@ -295,7 +335,7 @@ for time_mandante in TIMES:
             previsao_gols_visitante.input['idade_media_mandante'] = IDADES_EQUIPES_2024[time_mandante]
             previsao_gols_visitante.input['idade_media_visitante'] = IDADES_EQUIPES_2024[time_visitante]
 
-            previsao_gols_visitante.input['media_gols_contra_mandante'] = MEDIA_GOLS_CONTRA_MANDANTES[time_visitante]
+            previsao_gols_visitante.input['media_gols_contra_mandante'] = MEDIA_GOLS_CONTRA_MANDANTES[time_mandante]
             previsao_gols_visitante.input['media_gols_pro_visitante'] = MEDIA_GOLS_PRO_VISITANTES[time_visitante]
 
             previsao_gols_visitante.compute()
