@@ -307,8 +307,8 @@ IDADES_EQUIPES_2024 = {
     'Criciúma EC': 28, 'Corinthians': 24.8, 'Atlético-GO': 26.2, 'EC Vitória': 28.3, 'Cuiabá-MT': 25.9
 }
 
-ano_inicio = 2006
-ano_fim = 2009
+ano_inicio = 2013
+ano_fim = 2014
 
 MEDIA_GOLS_PRO_MANDANTES = get_media_gols_pro_mandante(CSV_DATASET, TIMES, ano_inicio, ano_fim)
 MEDIA_GOLS_CONTRA_VISITANTES = get_media_gols_contra_visitante(CSV_DATASET, TIMES, ano_inicio, ano_fim)
@@ -328,7 +328,10 @@ media_gols_pro_mandante = ctrl.Antecedent(np.arange(0, 2.2, 0.05), 'media_gols_p
 media_gols_contra_visitante = ctrl.Antecedent(np.arange(0, 3.5, 0.05), 'media_gols_contra_visitante')
 media_gols_contra_mandante = ctrl.Antecedent(np.arange(0, 2, 0.05), 'media_gols_contra_mandante')
 media_gols_pro_visitante = ctrl.Antecedent(np.arange(0, 1.4, 0.05), 'media_gols_pro_visitante')
-percentual_vitorias_mandante = ctrl.Antecedent(np.arange(0, 81, 0.5), 'percentual_vitorias_mandante')
+percentual_vitorias_mandante = ctrl.Antecedent(np.arange(0, 76, 0.5), 'percentual_vitorias_mandante')
+percentual_derrotas_mandante = ctrl.Antecedent(np.arange(0, 51, 0.5), 'percentual_derrotas_mandante')
+percentual_vitorias_visitante = ctrl.Antecedent(np.arange(0, 41, 0.5), 'percentual_vitorias_visitante')
+percentual_derrotas_visitante = ctrl.Antecedent(np.arange(0, 76, 0.5), 'percentual_derrotas_visitante')
 
 gols = ctrl.Consequent(np.arange(0, 8, 1), 'gols')
 
@@ -375,7 +378,22 @@ media_gols_pro_visitante['alta'] = fuzz.trimf(media_gols_pro_visitante.universe,
 # Funções de pertinência para percentual vitorias mandante
 percentual_vitorias_mandante['baixo'] = fuzz.trimf(percentual_vitorias_mandante.universe, [0, 32, 46])
 percentual_vitorias_mandante['medio'] = fuzz.trimf(percentual_vitorias_mandante.universe, [35, 50, 60])
-percentual_vitorias_mandante['alto'] = fuzz.trimf(percentual_vitorias_mandante.universe, [52, 60, 80])
+percentual_vitorias_mandante['alto'] = fuzz.trimf(percentual_vitorias_mandante.universe, [52, 60, 75])
+
+# Funções de pertinência para percentual derrotas mandante
+percentual_derrotas_mandante['baixo'] = fuzz.trimf(percentual_derrotas_mandante.universe, [0, 14, 18])
+percentual_derrotas_mandante['medio'] = fuzz.trimf(percentual_derrotas_mandante.universe, [14, 24, 30])
+percentual_derrotas_mandante['alto'] = fuzz.trimf(percentual_derrotas_mandante.universe, [27, 38, 50])
+
+# Funções de pertinência para percentual vitorias visitante
+percentual_vitorias_visitante['baixo'] = fuzz.trimf(percentual_vitorias_visitante.universe, [0, 15, 20])
+percentual_vitorias_visitante['medio'] = fuzz.trimf(percentual_vitorias_visitante.universe, [18, 25, 30])
+percentual_vitorias_visitante['alto'] = fuzz.trimf(percentual_vitorias_visitante.universe, [28, 34, 40])
+
+# Funções de pertinência para percentual derrotas visitante
+percentual_derrotas_visitante['baixo'] = fuzz.trimf(percentual_derrotas_visitante.universe, [0, 39, 43])
+percentual_derrotas_visitante['medio'] = fuzz.trimf(percentual_derrotas_visitante.universe, [39, 45, 52])
+percentual_derrotas_visitante['alto'] = fuzz.trimf(percentual_derrotas_visitante.universe, [50, 66, 75])
 
 # Funções de pertinência para gols
 gols['poucos'] = fuzz.trimf(gols.universe, [0, 0, 2])
@@ -462,13 +480,39 @@ rule52 = ctrl.Rule(media_gols_contra_mandante['baixa'] & media_gols_pro_visitant
 rule53 = ctrl.Rule(media_gols_contra_mandante['baixa'] & media_gols_pro_visitante['media'], gols['poucos'])
 rule54 = ctrl.Rule(media_gols_contra_mandante['baixa'] & media_gols_pro_visitante['baixa'], gols['poucos'])
 
+# Percentual vitorias mandante - gols mandante
+rule55 = ctrl.Rule(percentual_vitorias_mandante['alto'] & percentual_derrotas_visitante['alto'], gols['muitos'])
+rule56 = ctrl.Rule(percentual_vitorias_mandante['alto'] & percentual_derrotas_visitante['medio'], gols['moderados'])
+rule57 = ctrl.Rule(percentual_vitorias_mandante['alto'] & percentual_derrotas_visitante['baixo'], gols['poucos'])
+
+rule58 = ctrl.Rule(percentual_vitorias_mandante['medio'] & percentual_derrotas_visitante['alto'], gols['moderados'])
+rule59 = ctrl.Rule(percentual_vitorias_mandante['medio'] & percentual_derrotas_visitante['medio'], gols['poucos'])
+rule60 = ctrl.Rule(percentual_vitorias_mandante['medio'] & percentual_derrotas_visitante['baixo'], gols['poucos'])
+
+rule61 = ctrl.Rule(percentual_vitorias_mandante['baixo'] & percentual_derrotas_visitante['alto'], gols['moderados'])
+rule62 = ctrl.Rule(percentual_vitorias_mandante['baixo'] & percentual_derrotas_visitante['medio'], gols['poucos'])
+rule63 = ctrl.Rule(percentual_vitorias_mandante['baixo'] & percentual_derrotas_visitante['baixo'], gols['poucos'])
+
+# Percentual vitorias visitante - gols visitantes
+rule64 = ctrl.Rule(percentual_derrotas_mandante['alto'] & percentual_vitorias_visitante['alto'], gols['moderados'])
+rule65 = ctrl.Rule(percentual_derrotas_mandante['alto'] & percentual_vitorias_visitante['medio'], gols['moderados'])
+rule66 = ctrl.Rule(percentual_derrotas_mandante['alto'] & percentual_vitorias_visitante['baixo'], gols['poucos'])
+
+rule67 = ctrl.Rule(percentual_derrotas_mandante['medio'] & percentual_vitorias_visitante['alto'], gols['moderados'])
+rule68 = ctrl.Rule(percentual_derrotas_mandante['medio'] & percentual_vitorias_visitante['medio'], gols['poucos'])
+rule69 = ctrl.Rule(percentual_derrotas_mandante['medio'] & percentual_vitorias_visitante['baixo'], gols['poucos'])
+
+rule70 = ctrl.Rule(percentual_derrotas_mandante['baixo'] & percentual_vitorias_visitante['alto'], gols['poucos'])
+rule71 = ctrl.Rule(percentual_derrotas_mandante['baixo'] & percentual_vitorias_visitante['medio'], gols['poucos'])
+rule72 = ctrl.Rule(percentual_derrotas_mandante['baixo'] & percentual_vitorias_visitante['baixo'], gols['poucos'])
+
 
 # Sistema de controle fuzzy mandandte
-sistema_controle_mandante = ctrl.ControlSystem([rule1, rule2, rule3, rule4, rule5, rule6, rule7, rule8, rule9, rule19, rule20, rule21, rule22, rule23, rule24, rule25, rule26, rule27, rule37, rule38, rule39, rule40, rule41, rule42, rule43, rule44, rule45])
+sistema_controle_mandante = ctrl.ControlSystem([rule1, rule2, rule3, rule4, rule5, rule6, rule7, rule8, rule9, rule19, rule20, rule21, rule22, rule23, rule24, rule25, rule26, rule27, rule37, rule38, rule39, rule40, rule41, rule42, rule43, rule44, rule45, rule55, rule56, rule57, rule58, rule59, rule60, rule61, rule62, rule63])
 previsao_gols_mandante = ctrl.ControlSystemSimulation(sistema_controle_mandante)
 
 # Sistema de controle fuzzy visitante
-sistema_controle_visitante = ctrl.ControlSystem([rule10, rule11, rule12, rule13, rule14, rule14, rule15, rule16, rule17, rule18, rule28, rule29, rule30, rule31, rule32, rule33, rule34, rule35, rule36, rule46, rule47, rule48, rule49, rule50, rule51, rule52, rule53, rule54])
+sistema_controle_visitante = ctrl.ControlSystem([rule10, rule11, rule12, rule13, rule14, rule14, rule15, rule16, rule17, rule18, rule28, rule29, rule30, rule31, rule32, rule33, rule34, rule35, rule36, rule46, rule47, rule48, rule49, rule50, rule51, rule52, rule53, rule54, rule64, rule65, rule66, rule67, rule68, rule69, rule70, rule71, rule72])
 previsao_gols_visitante = ctrl.ControlSystemSimulation(sistema_controle_visitante)
 
 resultados = {time: 0 for time in TIMES}
@@ -486,6 +530,9 @@ for time_mandante in TIMES:
             previsao_gols_mandante.input['media_gols_pro_mandante'] = MEDIA_GOLS_PRO_MANDANTES[time_mandante]
             previsao_gols_mandante.input['media_gols_contra_visitante'] = MEDIA_GOLS_CONTRA_VISITANTES[time_visitante]
 
+            previsao_gols_mandante.input['percentual_vitorias_mandante'] = PERCENTUAL_VITORIAS_MANDANTE[time_mandante]
+            previsao_gols_mandante.input['percentual_derrotas_visitante'] = PERCENTUAL_DERROTAS_VISITANTE[time_visitante]
+
             previsao_gols_mandante.compute()
             
             # Simulando gols do time visitante
@@ -496,6 +543,9 @@ for time_mandante in TIMES:
 
             previsao_gols_visitante.input['media_gols_contra_mandante'] = MEDIA_GOLS_CONTRA_MANDANTES[time_mandante]
             previsao_gols_visitante.input['media_gols_pro_visitante'] = MEDIA_GOLS_PRO_VISITANTES[time_visitante]
+
+            previsao_gols_visitante.input['percentual_derrotas_mandante'] = PERCENTUAL_DERROTAS_MANDANTE[time_mandante]
+            previsao_gols_visitante.input['percentual_vitorias_visitante'] = PERCENTUAL_VITORIAS_VISITANTE[time_visitante]
 
             previsao_gols_visitante.compute()
             
