@@ -673,7 +673,6 @@ for confronto in CONFRONTOS:
     # Simulando gols do time mandante
     previsao_gols_mandante.input['valor_equipe_mandante'] = VALORES_EQUIPES_2024[time_mandante]
     previsao_gols_mandante.input['valor_equipe_visitante'] = VALORES_EQUIPES_2024[time_visitante]
-    
     previsao_gols_mandante.input['idade_media_mandante'] = IDADES_EQUIPES_2024[time_mandante]
     previsao_gols_mandante.input['idade_media_visitante'] = IDADES_EQUIPES_2024[time_visitante]
 
@@ -691,7 +690,6 @@ for confronto in CONFRONTOS:
     # Simulando gols do time visitante
     previsao_gols_visitante.input['valor_equipe_mandante'] = VALORES_EQUIPES_2024[time_mandante]
     previsao_gols_visitante.input['valor_equipe_visitante'] = VALORES_EQUIPES_2024[time_visitante]
-
     previsao_gols_visitante.input['idade_media_mandante'] = IDADES_EQUIPES_2024[time_mandante]
     previsao_gols_visitante.input['idade_media_visitante'] = IDADES_EQUIPES_2024[time_visitante]
 
@@ -711,9 +709,9 @@ for confronto in CONFRONTOS:
     gols_visitante_simulados = round(previsao_gols_visitante.output['gols'], 2)
     
     # Atualização dos pontos
-    if gols_mandante_simulados > gols_visitante_simulados:
+    if gols_mandante_simulados > 0.4 + gols_visitante_simulados:
         resultados[time_mandante] += 3
-    elif gols_mandante_simulados < gols_visitante_simulados:
+    elif gols_mandante_simulados + 0.4 < gols_visitante_simulados:
         resultados[time_visitante] += 3
     else:
         resultados[time_mandante] += 1
