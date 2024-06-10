@@ -3,11 +3,28 @@ import pandas as pd
 import numpy as np
 import skfuzzy as fuzz
 from skfuzzy import control as ctrl
+from collections import defaultdict
 
 CSV_DATASET = 'brasileirao_serie_a.csv'
+CSV_CONFRONTOS = 'confrontos.csv'
 
 # Funções auxiliares
-def get_media_gols_pro_mandante(csv_filename, times_mandantes_especificados, ano_inicio, ano_fim):
+def get_confrontos():
+    confrontos = []
+    with open(CSV_CONFRONTOS, newline='') as csvfile:
+        reader = csv.DictReader(csvfile)
+        next(reader)  # Ignora o cabeçalho
+        for row in reader:
+            confrontos.append(row)
+    
+    return confrontos
+
+def get_percentual_colocacao(time_mandante, time_visitante, colocacoes, percetual_dic):
+    if percetual_dic[colocacoes[time_mandante], colocacoes[time_visitante]] == 0.0:
+        return 1.0
+    return percetual_dic[colocacoes[time_mandante], colocacoes[time_visitante]]
+
+def get_media_gols_pro_mandantes(csv_filename, times_mandantes_especificados, ano_inicio, ano_fim):
     dados_gols_especificado = {time: {'soma_gols': 0, 'quantidade_jogos': 0} for time in times_mandantes_especificados}
     dados_gols_total = {time: {'soma_gols': 0, 'quantidade_jogos': 0} for time in times_mandantes_especificados}
     
@@ -40,7 +57,7 @@ def get_media_gols_pro_mandante(csv_filename, times_mandantes_especificados, ano
     
     return medias_gols
 
-def get_media_gols_contra_visitante(csv_filename, times_mandantes_especificados, ano_inicio, ano_fim):
+def get_media_gols_contra_visitantes(csv_filename, times_mandantes_especificados, ano_inicio, ano_fim):
     dados_gols_especificado = {time: {'soma_gols': 0, 'quantidade_jogos': 0} for time in times_mandantes_especificados}
     dados_gols_total = {time: {'soma_gols': 0, 'quantidade_jogos': 0} for time in times_mandantes_especificados}
     
@@ -73,7 +90,7 @@ def get_media_gols_contra_visitante(csv_filename, times_mandantes_especificados,
     
     return medias_gols
 
-def get_media_gols_contra_mandante(csv_filename, times_visitantes_especificados, ano_inicio, ano_fim):
+def get_media_gols_contra_mandantes(csv_filename, times_visitantes_especificados, ano_inicio, ano_fim):
     dados_gols_especificado = {time: {'soma_gols': 0, 'quantidade_jogos': 0} for time in times_visitantes_especificados}
     dados_gols_total = {time: {'soma_gols': 0, 'quantidade_jogos': 0} for time in times_visitantes_especificados}
     
@@ -106,7 +123,7 @@ def get_media_gols_contra_mandante(csv_filename, times_visitantes_especificados,
     
     return medias_gols
 
-def get_media_gols_pro_visitante(csv_filename, times_visitantes_especificados, ano_inicio, ano_fim):
+def get_media_gols_pro_visitantes(csv_filename, times_visitantes_especificados, ano_inicio, ano_fim):
     dados_gols_especificado = {time: {'soma_gols': 0, 'quantidade_jogos': 0} for time in times_visitantes_especificados}
     dados_gols_total = {time: {'soma_gols': 0, 'quantidade_jogos': 0} for time in times_visitantes_especificados}
     
@@ -139,7 +156,7 @@ def get_media_gols_pro_visitante(csv_filename, times_visitantes_especificados, a
     
     return medias_gols
 
-def get_percentual_vitorias_mandante(csv_filename, times_mandantes_especificados, ano_inicio, ano_fim):
+def get_percentual_vitorias_mandantes(csv_filename, times_mandantes_especificados, ano_inicio, ano_fim):
     dados_vitorias_especificado = {time: {'vitorias': 0, 'quantidade_jogos': 0} for time in times_mandantes_especificados}
     dados_vitorias_total = {time: {'vitorias': 0, 'quantidade_jogos': 0} for time in times_mandantes_especificados}
     
@@ -176,7 +193,7 @@ def get_percentual_vitorias_mandante(csv_filename, times_mandantes_especificados
     
     return percentual_vitorias
 
-def get_percentual_vitorias_visitante(csv_filename, times_visitantes_especificados, ano_inicio, ano_fim):
+def get_percentual_vitorias_visitantes(csv_filename, times_visitantes_especificados, ano_inicio, ano_fim):
     dados_vitorias_especificado = {time: {'vitorias': 0, 'quantidade_jogos': 0} for time in times_visitantes_especificados}
     dados_vitorias_total = {time: {'vitorias': 0, 'quantidade_jogos': 0} for time in times_visitantes_especificados}
     
@@ -213,7 +230,7 @@ def get_percentual_vitorias_visitante(csv_filename, times_visitantes_especificad
     
     return percentual_vitorias
 
-def get_percentual_derrotas_mandante(csv_filename, times_mandantes_especificados, ano_inicio, ano_fim):
+def get_percentual_derrotas_mandantes(csv_filename, times_mandantes_especificados, ano_inicio, ano_fim):
     dados_derrotas_especificado = {time: {'derrotas': 0, 'quantidade_jogos': 0} for time in times_mandantes_especificados}
     dados_derrotas_total = {time: {'derrotas': 0, 'quantidade_jogos': 0} for time in times_mandantes_especificados}
     
@@ -250,7 +267,7 @@ def get_percentual_derrotas_mandante(csv_filename, times_mandantes_especificados
     
     return percentual_derrotas
 
-def get_percentual_derrotas_visitante(csv_filename, times_visitantes_especificados, ano_inicio, ano_fim):
+def get_percentual_derrotas_visitantes(csv_filename, times_visitantes_especificados, ano_inicio, ano_fim):
     dados_derrotas_especificado = {time: {'derrotas': 0, 'quantidade_jogos': 0} for time in times_visitantes_especificados}
     dados_derrotas_total = {time: {'derrotas': 0, 'quantidade_jogos': 0} for time in times_visitantes_especificados}
     
@@ -287,6 +304,80 @@ def get_percentual_derrotas_visitante(csv_filename, times_visitantes_especificad
     
     return percentual_derrotas
 
+def get_percentual_vitorias_colocacao_mandantes(csv_filename):
+    # Dicionário para armazenar contagens de jogos e vitórias dos mandantes
+    vitorias_por_colocacao = defaultdict(lambda: {'jogos': 0, 'vitorias': 0})
+
+    with open(csv_filename, newline='') as csvfile:
+        reader = csv.DictReader(csvfile)
+        
+        for row in reader:
+            gols_mandante_str = row['gols_mandante']
+            gols_visitante_str = row['gols_visitante']
+            
+            # Verifica se os gols são números válidos
+            if gols_mandante_str.isdigit() and gols_visitante_str.isdigit():
+                gols_mandante = int(gols_mandante_str)
+                gols_visitante = int(gols_visitante_str)
+                
+                # Verifica se a linha tem os dados de colocação
+                if 'colocacao_mandante' in row and 'colocacao_visitante' in row:
+                    colocacao_mandante = row['colocacao_mandante']
+                    colocacao_visitante = row['colocacao_visitante']
+                    
+                    # Verifica se os dados de colocação não estão vazios
+                    if colocacao_mandante and colocacao_visitante:
+                        key = (int(colocacao_mandante), int(colocacao_visitante))
+                        vitorias_por_colocacao[key]['jogos'] += 1
+                        if gols_mandante > gols_visitante:
+                            vitorias_por_colocacao[key]['vitorias'] += 1
+    
+    # Calcular as porcentagens de vitórias dos mandantes para cada combinação de colocações
+    porcentagens_vitorias = {}
+    for (colocacao_mandante, colocacao_visitante), dados in vitorias_por_colocacao.items():
+        if dados['jogos'] > 0:
+            porcentagem = (dados['vitorias'] / dados['jogos']) * 100
+            porcentagens_vitorias[(colocacao_mandante, colocacao_visitante)] = porcentagem
+    
+    return porcentagens_vitorias
+
+def get_percentual_vitorias_colocacao_visitantes(csv_filename):
+    # Dicionário para armazenar contagens de jogos e vitórias dos visitantes
+    vitorias_por_colocacao = defaultdict(lambda: {'jogos': 0, 'vitorias': 0})
+
+    with open(csv_filename, newline='') as csvfile:
+        reader = csv.DictReader(csvfile)
+        
+        for row in reader:
+            gols_mandante_str = row['gols_mandante']
+            gols_visitante_str = row['gols_visitante']
+            
+            # Verifica se os gols são números válidos
+            if gols_mandante_str.isdigit() and gols_visitante_str.isdigit():
+                gols_mandante = int(gols_mandante_str)
+                gols_visitante = int(gols_visitante_str)
+                
+                # Verifica se a linha tem os dados de colocação
+                if 'colocacao_mandante' in row and 'colocacao_visitante' in row:
+                    colocacao_mandante = row['colocacao_mandante']
+                    colocacao_visitante = row['colocacao_visitante']
+                    
+                    # Verifica se os dados de colocação não estão vazios
+                    if colocacao_mandante and colocacao_visitante:
+                        key = (int(colocacao_mandante), int(colocacao_visitante))
+                        vitorias_por_colocacao[key]['jogos'] += 1
+                        if gols_visitante > gols_mandante:  # Mudança: Comparação de gols do visitante com gols do mandante
+                            vitorias_por_colocacao[key]['vitorias'] += 1
+    
+    # Calcular as porcentagens de vitórias dos visitantes para cada combinação de colocações
+    porcentagens_vitorias = {}
+    for (colocacao_mandante, colocacao_visitante), dados in vitorias_por_colocacao.items():
+        if dados['jogos'] > 0:
+            porcentagem = (dados['vitorias'] / dados['jogos']) * 100
+            porcentagens_vitorias[(colocacao_mandante, colocacao_visitante)] = porcentagem
+    
+    return porcentagens_vitorias
+
 # Variáveis globais
 TIMES = [
     'Atlético-GO', 'Atlético-MG', 'Athletico-PR', 'EC Bahia', 'Botafogo', 
@@ -306,18 +397,21 @@ IDADES_EQUIPES_2024 = {
     'Fortaleza': 28.5, 'Grêmio': 27.3, 'Vasco da Gama': 26.8, 'Juventude': 26.9, 'Fluminense': 28,
     'Criciúma EC': 28, 'Corinthians': 24.8, 'Atlético-GO': 26.2, 'EC Vitória': 28.3, 'Cuiabá-MT': 25.9
 }
+CONFRONTOS = get_confrontos()
 
-ano_inicio = 2013
-ano_fim = 2014
+ano_inicio = 2018
+ano_fim = 2023
 
-MEDIA_GOLS_PRO_MANDANTES = get_media_gols_pro_mandante(CSV_DATASET, TIMES, ano_inicio, ano_fim)
-MEDIA_GOLS_CONTRA_VISITANTES = get_media_gols_contra_visitante(CSV_DATASET, TIMES, ano_inicio, ano_fim)
-MEDIA_GOLS_CONTRA_MANDANTES = get_media_gols_contra_mandante(CSV_DATASET, TIMES, ano_inicio, ano_fim)
-MEDIA_GOLS_PRO_VISITANTES = get_media_gols_pro_visitante(CSV_DATASET, TIMES, ano_inicio, ano_fim)
-PERCENTUAL_VITORIAS_MANDANTE = get_percentual_vitorias_mandante(CSV_DATASET, TIMES, ano_inicio, ano_fim)
-PERCENTUAL_DERROTAS_MANDANTE = get_percentual_derrotas_mandante(CSV_DATASET, TIMES, ano_inicio, ano_fim)
-PERCENTUAL_VITORIAS_VISITANTE = get_percentual_vitorias_visitante(CSV_DATASET, TIMES, ano_inicio, ano_fim)
-PERCENTUAL_DERROTAS_VISITANTE = get_percentual_derrotas_visitante(CSV_DATASET, TIMES, ano_inicio, ano_fim)
+MEDIA_GOLS_PRO_MANDANTES = get_media_gols_pro_mandantes(CSV_DATASET, TIMES, ano_inicio, ano_fim)
+MEDIA_GOLS_CONTRA_VISITANTES = get_media_gols_contra_visitantes(CSV_DATASET, TIMES, ano_inicio, ano_fim)
+MEDIA_GOLS_CONTRA_MANDANTES = get_media_gols_contra_mandantes(CSV_DATASET, TIMES, ano_inicio, ano_fim)
+MEDIA_GOLS_PRO_VISITANTES = get_media_gols_pro_visitantes(CSV_DATASET, TIMES, ano_inicio, ano_fim)
+PERCENTUAL_VITORIAS_MANDANTES = get_percentual_vitorias_mandantes(CSV_DATASET, TIMES, ano_inicio, ano_fim)
+PERCENTUAL_DERROTAS_MANDANTES = get_percentual_derrotas_mandantes(CSV_DATASET, TIMES, ano_inicio, ano_fim)
+PERCENTUAL_VITORIAS_VISITANTES = get_percentual_vitorias_visitantes(CSV_DATASET, TIMES, ano_inicio, ano_fim)
+PERCENTUAL_DERROTAS_VISITANTES = get_percentual_derrotas_visitantes(CSV_DATASET, TIMES, ano_inicio, ano_fim)
+PERCENTUAL_VITORIAS_COLOCACAO_MANDANTES =  get_percentual_vitorias_colocacao_mandantes(CSV_DATASET)
+PERCENTUAL_VITORIAS_COLOCACAO_VISITANTES =  get_percentual_vitorias_colocacao_visitantes(CSV_DATASET)
 
 # Variáveis fuzzy
 valor_equipe_mandante = ctrl.Antecedent(np.arange(0, 221, 1), 'valor_equipe_mandante')
@@ -332,6 +426,8 @@ percentual_vitorias_mandante = ctrl.Antecedent(np.arange(0, 76, 0.5), 'percentua
 percentual_derrotas_mandante = ctrl.Antecedent(np.arange(0, 51, 0.5), 'percentual_derrotas_mandante')
 percentual_vitorias_visitante = ctrl.Antecedent(np.arange(0, 41, 0.5), 'percentual_vitorias_visitante')
 percentual_derrotas_visitante = ctrl.Antecedent(np.arange(0, 76, 0.5), 'percentual_derrotas_visitante')
+percentual_vitorias_colocacao_mandante = ctrl.Antecedent(np.arange(0, 101, 0.5), 'percentual_vitorias_colocacao_mandante')
+percentual_vitorias_colocacao_visitante = ctrl.Antecedent(np.arange(0, 76, 0.5), 'percentual_vitorias_colocacao_visitante')
 
 gols = ctrl.Consequent(np.arange(0, 8, 1), 'gols')
 
@@ -394,6 +490,16 @@ percentual_vitorias_visitante['alto'] = fuzz.trimf(percentual_vitorias_visitante
 percentual_derrotas_visitante['baixo'] = fuzz.trimf(percentual_derrotas_visitante.universe, [0, 39, 43])
 percentual_derrotas_visitante['medio'] = fuzz.trimf(percentual_derrotas_visitante.universe, [39, 45, 52])
 percentual_derrotas_visitante['alto'] = fuzz.trimf(percentual_derrotas_visitante.universe, [50, 66, 75])
+
+# Funções de pertinência para percentual vitorias por colocção mandante
+percentual_vitorias_colocacao_mandante['baixo'] = fuzz.trimf(percentual_vitorias_colocacao_mandante.universe, [0, 15, 40])
+percentual_vitorias_colocacao_mandante['medio'] = fuzz.trimf(percentual_vitorias_colocacao_mandante.universe, [38, 50, 65])
+percentual_vitorias_colocacao_mandante['alto'] = fuzz.trimf(percentual_vitorias_colocacao_mandante.universe, [60, 85, 100])
+
+# Funções de pertinência para percentual vitorias por colocção visitante
+percentual_vitorias_colocacao_visitante['baixo'] = fuzz.trimf(percentual_vitorias_colocacao_visitante.universe, [0, 15, 24])
+percentual_vitorias_colocacao_visitante['medio'] = fuzz.trimf(percentual_vitorias_colocacao_visitante.universe, [17, 24, 32])
+percentual_vitorias_colocacao_visitante['alto'] = fuzz.trimf(percentual_vitorias_colocacao_visitante.universe, [30, 69, 75])
 
 # Funções de pertinência para gols
 gols['poucos'] = fuzz.trimf(gols.universe, [0, 0, 2])
@@ -506,61 +612,112 @@ rule70 = ctrl.Rule(percentual_derrotas_mandante['baixo'] & percentual_vitorias_v
 rule71 = ctrl.Rule(percentual_derrotas_mandante['baixo'] & percentual_vitorias_visitante['medio'], gols['poucos'])
 rule72 = ctrl.Rule(percentual_derrotas_mandante['baixo'] & percentual_vitorias_visitante['baixo'], gols['poucos'])
 
+# Percentual vitorias colocação - gols mandantes
+rule73 = ctrl.Rule(percentual_vitorias_colocacao_mandante['alto'] & percentual_vitorias_colocacao_visitante['alto'], gols['poucos'])
+rule74 = ctrl.Rule(percentual_vitorias_colocacao_mandante['alto'] & percentual_vitorias_colocacao_visitante['medio'], gols['moderados'])
+rule75 = ctrl.Rule(percentual_vitorias_colocacao_mandante['alto'] & percentual_vitorias_colocacao_visitante['baixo'], gols['muitos'])
 
-# Sistema de controle fuzzy mandandte
-sistema_controle_mandante = ctrl.ControlSystem([rule1, rule2, rule3, rule4, rule5, rule6, rule7, rule8, rule9, rule19, rule20, rule21, rule22, rule23, rule24, rule25, rule26, rule27, rule37, rule38, rule39, rule40, rule41, rule42, rule43, rule44, rule45, rule55, rule56, rule57, rule58, rule59, rule60, rule61, rule62, rule63])
+rule76 = ctrl.Rule(percentual_vitorias_colocacao_mandante['medio'] & percentual_vitorias_colocacao_visitante['alto'], gols['poucos'])
+rule77 = ctrl.Rule(percentual_vitorias_colocacao_mandante['medio'] & percentual_vitorias_colocacao_visitante['medio'], gols['poucos'])
+rule78 = ctrl.Rule(percentual_vitorias_colocacao_mandante['medio'] & percentual_vitorias_colocacao_visitante['baixo'], gols['moderados'])
+
+rule79 = ctrl.Rule(percentual_vitorias_colocacao_mandante['baixo'] & percentual_vitorias_colocacao_visitante['alto'], gols['poucos'])
+rule80 = ctrl.Rule(percentual_vitorias_colocacao_mandante['baixo'] & percentual_vitorias_colocacao_visitante['medio'], gols['poucos'])
+rule81 = ctrl.Rule(percentual_vitorias_colocacao_mandante['baixo'] & percentual_vitorias_colocacao_visitante['baixo'], gols['poucos'])
+
+# Percentual vitorias colocação - gols visitantes
+rule82 = ctrl.Rule(percentual_vitorias_colocacao_mandante['alto'] & percentual_vitorias_colocacao_visitante['alto'], gols['poucos'])
+rule83 = ctrl.Rule(percentual_vitorias_colocacao_mandante['alto'] & percentual_vitorias_colocacao_visitante['medio'], gols['poucos'])
+rule84 = ctrl.Rule(percentual_vitorias_colocacao_mandante['alto'] & percentual_vitorias_colocacao_visitante['baixo'], gols['poucos'])
+
+rule85 = ctrl.Rule(percentual_vitorias_colocacao_mandante['medio'] & percentual_vitorias_colocacao_visitante['alto'], gols['poucos'])
+rule86 = ctrl.Rule(percentual_vitorias_colocacao_mandante['medio'] & percentual_vitorias_colocacao_visitante['medio'], gols['poucos'])
+rule87 = ctrl.Rule(percentual_vitorias_colocacao_mandante['medio'] & percentual_vitorias_colocacao_visitante['baixo'], gols['poucos'])
+
+rule88 = ctrl.Rule(percentual_vitorias_colocacao_mandante['baixo'] & percentual_vitorias_colocacao_visitante['alto'], gols['moderados'])
+rule89 = ctrl.Rule(percentual_vitorias_colocacao_mandante['baixo'] & percentual_vitorias_colocacao_visitante['medio'], gols['poucos'])
+rule90 = ctrl.Rule(percentual_vitorias_colocacao_mandante['baixo'] & percentual_vitorias_colocacao_visitante['baixo'], gols['poucos'])
+
+
+# Sistema de controle fuzzy mandante
+sistema_controle_mandante = ctrl.ControlSystem([rule1, rule2, rule3, rule4, rule5, rule6, rule7, rule8, rule9, rule19, rule20, rule21, rule22, rule23, rule24, rule25, rule26, rule27, rule37, rule38, rule39, rule40, rule41, rule42, rule43, rule44, rule45, rule55, rule56, rule57, rule58, rule59, rule60, rule61, rule62, rule63, rule73, rule74, rule75, rule76, rule77, rule78, rule79, rule80, rule81])
 previsao_gols_mandante = ctrl.ControlSystemSimulation(sistema_controle_mandante)
+previsao_gols_mandante.defuzzify_method = 'centroid'
 
 # Sistema de controle fuzzy visitante
-sistema_controle_visitante = ctrl.ControlSystem([rule10, rule11, rule12, rule13, rule14, rule14, rule15, rule16, rule17, rule18, rule28, rule29, rule30, rule31, rule32, rule33, rule34, rule35, rule36, rule46, rule47, rule48, rule49, rule50, rule51, rule52, rule53, rule54, rule64, rule65, rule66, rule67, rule68, rule69, rule70, rule71, rule72])
+sistema_controle_visitante = ctrl.ControlSystem([rule10, rule11, rule12, rule13, rule14, rule14, rule15, rule16, rule17, rule18, rule28, rule29, rule30, rule31, rule32, rule33, rule34, rule35, rule36, rule46, rule47, rule48, rule49, rule50, rule51, rule52, rule53, rule54, rule64, rule65, rule66, rule67, rule68, rule69, rule70, rule71, rule72, rule82, rule83, rule84, rule85, rule86, rule87, rule88, rule89, rule90])
 previsao_gols_visitante = ctrl.ControlSystemSimulation(sistema_controle_visitante)
+previsao_gols_visitante.defuzzify_method = 'centroid'
+
 
 resultados = {time: 0 for time in TIMES}
+rodada_atual = '1'
+colocacoes = {
+    'Atlético-GO': 1, 'Atlético-MG': 2, 'Athletico-PR': 3, 'Botafogo': 4, 'Corinthians': 5, 'Criciúma EC': 6, 'Cruzeiro': 7, 'Cuiabá-MT': 8, 
+    'EC Bahia': 9, 'EC Vitória': 10, 'Flamengo': 11, 'Fluminense': 12, 'Fortaleza': 13, 'Grêmio': 14, 'Internacional': 15, 'Juventude': 16, 
+    'Palmeiras': 17, 'RB Bragantino': 18, 'São Paulo': 19, 'Vasco da Gama': 20
+}
 
 # Simulação das partidas
-for time_mandante in TIMES:
-    for time_visitante in TIMES:
-        if time_mandante != time_visitante:
-            # Simulando gols do time mandante
-            previsao_gols_mandante.input['valor_equipe_mandante'] = VALORES_EQUIPES_2024[time_mandante]
-            previsao_gols_mandante.input['valor_equipe_visitante'] = VALORES_EQUIPES_2024[time_visitante]
-            previsao_gols_mandante.input['idade_media_mandante'] = IDADES_EQUIPES_2024[time_mandante]
-            previsao_gols_mandante.input['idade_media_visitante'] = IDADES_EQUIPES_2024[time_visitante]
+for confronto in CONFRONTOS:
+    rodada = confronto['rodada']
+    time_mandante = confronto['time_mandante']
+    time_visitante = confronto['time_visitante']
 
-            previsao_gols_mandante.input['media_gols_pro_mandante'] = MEDIA_GOLS_PRO_MANDANTES[time_mandante]
-            previsao_gols_mandante.input['media_gols_contra_visitante'] = MEDIA_GOLS_CONTRA_VISITANTES[time_visitante]
+    # Armazena as colocações do campeonato
+    if rodada != rodada_atual:
+        resultados_ordenados = sorted(resultados.items(), key=lambda x: x[1], reverse=True)
+        colocacoes = {time: i + 1 for i, (time, _) in enumerate(resultados_ordenados)}
+        rodada_atual = rodada
 
-            previsao_gols_mandante.input['percentual_vitorias_mandante'] = PERCENTUAL_VITORIAS_MANDANTE[time_mandante]
-            previsao_gols_mandante.input['percentual_derrotas_visitante'] = PERCENTUAL_DERROTAS_VISITANTE[time_visitante]
+    # Simulando gols do time mandante
+    previsao_gols_mandante.input['valor_equipe_mandante'] = VALORES_EQUIPES_2024[time_mandante]
+    previsao_gols_mandante.input['valor_equipe_visitante'] = VALORES_EQUIPES_2024[time_visitante]
+    
+    previsao_gols_mandante.input['idade_media_mandante'] = IDADES_EQUIPES_2024[time_mandante]
+    previsao_gols_mandante.input['idade_media_visitante'] = IDADES_EQUIPES_2024[time_visitante]
 
-            previsao_gols_mandante.compute()
-            
-            # Simulando gols do time visitante
-            previsao_gols_visitante.input['valor_equipe_mandante'] = VALORES_EQUIPES_2024[time_mandante]
-            previsao_gols_visitante.input['valor_equipe_visitante'] = VALORES_EQUIPES_2024[time_visitante]
-            previsao_gols_visitante.input['idade_media_mandante'] = IDADES_EQUIPES_2024[time_mandante]
-            previsao_gols_visitante.input['idade_media_visitante'] = IDADES_EQUIPES_2024[time_visitante]
+    previsao_gols_mandante.input['media_gols_pro_mandante'] = MEDIA_GOLS_PRO_MANDANTES[time_mandante]
+    previsao_gols_mandante.input['media_gols_contra_visitante'] = MEDIA_GOLS_CONTRA_VISITANTES[time_visitante]
 
-            previsao_gols_visitante.input['media_gols_contra_mandante'] = MEDIA_GOLS_CONTRA_MANDANTES[time_mandante]
-            previsao_gols_visitante.input['media_gols_pro_visitante'] = MEDIA_GOLS_PRO_VISITANTES[time_visitante]
+    previsao_gols_mandante.input['percentual_vitorias_mandante'] = PERCENTUAL_VITORIAS_MANDANTES[time_mandante]
+    previsao_gols_mandante.input['percentual_derrotas_visitante'] = PERCENTUAL_DERROTAS_VISITANTES[time_visitante]
 
-            previsao_gols_visitante.input['percentual_derrotas_mandante'] = PERCENTUAL_DERROTAS_MANDANTE[time_mandante]
-            previsao_gols_visitante.input['percentual_vitorias_visitante'] = PERCENTUAL_VITORIAS_VISITANTE[time_visitante]
+    previsao_gols_mandante.input['percentual_vitorias_colocacao_mandante'] = get_percentual_colocacao(time_mandante, time_visitante, colocacoes, PERCENTUAL_VITORIAS_COLOCACAO_MANDANTES)
+    previsao_gols_mandante.input['percentual_vitorias_colocacao_visitante'] = get_percentual_colocacao(time_mandante, time_visitante, colocacoes, PERCENTUAL_VITORIAS_COLOCACAO_VISITANTES)
 
-            previsao_gols_visitante.compute()
-            
-            # Resultado da simulação
-            gols_mandante_simulados = round(previsao_gols_mandante.output['gols'], 2)
-            gols_visitante_simulados = round(previsao_gols_visitante.output['gols'], 2)
-            
-            # Atualização dos pontos
-            if gols_mandante_simulados > gols_visitante_simulados:
-                resultados[time_mandante] += 3
-            elif gols_mandante_simulados < gols_visitante_simulados:
-                resultados[time_visitante] += 3
-            else:
-                resultados[time_mandante] += 1
-                resultados[time_visitante] += 1
+    previsao_gols_mandante.compute()
+    
+    # Simulando gols do time visitante
+    previsao_gols_visitante.input['valor_equipe_mandante'] = VALORES_EQUIPES_2024[time_mandante]
+    previsao_gols_visitante.input['valor_equipe_visitante'] = VALORES_EQUIPES_2024[time_visitante]
+
+    previsao_gols_visitante.input['idade_media_mandante'] = IDADES_EQUIPES_2024[time_mandante]
+    previsao_gols_visitante.input['idade_media_visitante'] = IDADES_EQUIPES_2024[time_visitante]
+
+    previsao_gols_visitante.input['media_gols_contra_mandante'] = MEDIA_GOLS_CONTRA_MANDANTES[time_mandante]
+    previsao_gols_visitante.input['media_gols_pro_visitante'] = MEDIA_GOLS_PRO_VISITANTES[time_visitante]
+
+    previsao_gols_visitante.input['percentual_derrotas_mandante'] = PERCENTUAL_DERROTAS_MANDANTES[time_mandante]
+    previsao_gols_visitante.input['percentual_vitorias_visitante'] = PERCENTUAL_VITORIAS_VISITANTES[time_visitante]
+
+    previsao_gols_mandante.input['percentual_vitorias_colocacao_mandante'] = get_percentual_colocacao(time_mandante, time_visitante, colocacoes, PERCENTUAL_VITORIAS_COLOCACAO_MANDANTES)
+    previsao_gols_mandante.input['percentual_vitorias_colocacao_visitante'] = get_percentual_colocacao(time_mandante, time_visitante, colocacoes, PERCENTUAL_VITORIAS_COLOCACAO_VISITANTES)
+
+    previsao_gols_visitante.compute()
+    
+    # Resultado da simulação
+    gols_mandante_simulados = round(previsao_gols_mandante.output['gols'], 2)
+    gols_visitante_simulados = round(previsao_gols_visitante.output['gols'], 2)
+    
+    # Atualização dos pontos
+    if gols_mandante_simulados > gols_visitante_simulados:
+        resultados[time_mandante] += 3
+    elif gols_mandante_simulados < gols_visitante_simulados:
+        resultados[time_visitante] += 3
+    else:
+        resultados[time_mandante] += 1
+        resultados[time_visitante] += 1
 
 # Determinação do campeão
 campeao = max(resultados, key=resultados.get)
