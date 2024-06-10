@@ -5,8 +5,8 @@ import skfuzzy as fuzz
 from skfuzzy import control as ctrl
 from collections import defaultdict
 
-CSV_DATASET = 'brasileirao_serie_a.csv'
-CSV_CONFRONTOS = 'confrontos.csv'
+CSV_DATASET = 'data/brasileirao_serie_a.csv'
+CSV_CONFRONTOS = 'data/confrontos.csv'
 
 # Funções auxiliares
 def get_confrontos():
@@ -305,7 +305,6 @@ def get_percentual_derrotas_visitantes(csv_filename, times_visitantes_especifica
     return percentual_derrotas
 
 def get_percentual_vitorias_colocacao_mandantes(csv_filename):
-    # Dicionário para armazenar contagens de jogos e vitórias dos mandantes
     vitorias_por_colocacao = defaultdict(lambda: {'jogos': 0, 'vitorias': 0})
 
     with open(csv_filename, newline='') as csvfile:
@@ -315,24 +314,20 @@ def get_percentual_vitorias_colocacao_mandantes(csv_filename):
             gols_mandante_str = row['gols_mandante']
             gols_visitante_str = row['gols_visitante']
             
-            # Verifica se os gols são números válidos
             if gols_mandante_str.isdigit() and gols_visitante_str.isdigit():
                 gols_mandante = int(gols_mandante_str)
                 gols_visitante = int(gols_visitante_str)
                 
-                # Verifica se a linha tem os dados de colocação
                 if 'colocacao_mandante' in row and 'colocacao_visitante' in row:
                     colocacao_mandante = row['colocacao_mandante']
                     colocacao_visitante = row['colocacao_visitante']
                     
-                    # Verifica se os dados de colocação não estão vazios
                     if colocacao_mandante and colocacao_visitante:
                         key = (int(colocacao_mandante), int(colocacao_visitante))
                         vitorias_por_colocacao[key]['jogos'] += 1
                         if gols_mandante > gols_visitante:
                             vitorias_por_colocacao[key]['vitorias'] += 1
     
-    # Calcular as porcentagens de vitórias dos mandantes para cada combinação de colocações
     porcentagens_vitorias = {}
     for (colocacao_mandante, colocacao_visitante), dados in vitorias_por_colocacao.items():
         if dados['jogos'] > 0:
@@ -342,7 +337,6 @@ def get_percentual_vitorias_colocacao_mandantes(csv_filename):
     return porcentagens_vitorias
 
 def get_percentual_vitorias_colocacao_visitantes(csv_filename):
-    # Dicionário para armazenar contagens de jogos e vitórias dos visitantes
     vitorias_por_colocacao = defaultdict(lambda: {'jogos': 0, 'vitorias': 0})
 
     with open(csv_filename, newline='') as csvfile:
@@ -352,24 +346,20 @@ def get_percentual_vitorias_colocacao_visitantes(csv_filename):
             gols_mandante_str = row['gols_mandante']
             gols_visitante_str = row['gols_visitante']
             
-            # Verifica se os gols são números válidos
             if gols_mandante_str.isdigit() and gols_visitante_str.isdigit():
                 gols_mandante = int(gols_mandante_str)
                 gols_visitante = int(gols_visitante_str)
                 
-                # Verifica se a linha tem os dados de colocação
                 if 'colocacao_mandante' in row and 'colocacao_visitante' in row:
                     colocacao_mandante = row['colocacao_mandante']
                     colocacao_visitante = row['colocacao_visitante']
                     
-                    # Verifica se os dados de colocação não estão vazios
                     if colocacao_mandante and colocacao_visitante:
                         key = (int(colocacao_mandante), int(colocacao_visitante))
                         vitorias_por_colocacao[key]['jogos'] += 1
-                        if gols_visitante > gols_mandante:  # Mudança: Comparação de gols do visitante com gols do mandante
+                        if gols_visitante > gols_mandante:
                             vitorias_por_colocacao[key]['vitorias'] += 1
     
-    # Calcular as porcentagens de vitórias dos visitantes para cada combinação de colocações
     porcentagens_vitorias = {}
     for (colocacao_mandante, colocacao_visitante), dados in vitorias_por_colocacao.items():
         if dados['jogos'] > 0:
@@ -399,6 +389,7 @@ IDADES_EQUIPES_2024 = {
 }
 CONFRONTOS = get_confrontos()
 
+# Variáveis de intervalo de tempo para dados
 ano_inicio = 2018
 ano_fim = 2023
 
@@ -650,6 +641,7 @@ previsao_gols_visitante = ctrl.ControlSystemSimulation(sistema_controle_visitant
 previsao_gols_visitante.defuzzify_method = 'centroid'
 
 
+# Variáveis para usar durante a simulação das partidas
 resultados = {time: 0 for time in TIMES}
 rodada_atual = '1'
 colocacoes = {
@@ -673,6 +665,7 @@ for confronto in CONFRONTOS:
     # Simulando gols do time mandante
     previsao_gols_mandante.input['valor_equipe_mandante'] = VALORES_EQUIPES_2024[time_mandante]
     previsao_gols_mandante.input['valor_equipe_visitante'] = VALORES_EQUIPES_2024[time_visitante]
+
     previsao_gols_mandante.input['idade_media_mandante'] = IDADES_EQUIPES_2024[time_mandante]
     previsao_gols_mandante.input['idade_media_visitante'] = IDADES_EQUIPES_2024[time_visitante]
 
@@ -690,6 +683,7 @@ for confronto in CONFRONTOS:
     # Simulando gols do time visitante
     previsao_gols_visitante.input['valor_equipe_mandante'] = VALORES_EQUIPES_2024[time_mandante]
     previsao_gols_visitante.input['valor_equipe_visitante'] = VALORES_EQUIPES_2024[time_visitante]
+    
     previsao_gols_visitante.input['idade_media_mandante'] = IDADES_EQUIPES_2024[time_mandante]
     previsao_gols_visitante.input['idade_media_visitante'] = IDADES_EQUIPES_2024[time_visitante]
 
