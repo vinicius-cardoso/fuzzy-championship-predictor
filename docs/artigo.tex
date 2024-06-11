@@ -7,6 +7,7 @@
 \usepackage{graphicx}
 \usepackage{textcomp}
 \usepackage{xcolor}
+\usepackage{indentfirst}
 \def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
     T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
 \begin{document}
@@ -38,7 +39,18 @@
 \maketitle
 
 \begin{abstract}
-Resumo
+Esse artigo apresenta uma abordagem matemática para a previsão dos resultados do 
+Campeonato Brasileiro de Futebol de 2024 utilizando lógica fuzzy. 
+A lógica fuzzy é uma técnica que lida com a incerteza e imprevisão, aplicando 
+modelos e prevendo resultados dos confrontos entre times a partir de diferentes 
+variáveis. O estudo envolve a coleta e a análise de dados de partidas dos anos 
+anteriores disponíveis na internet, fornecendo dados sobre condições dos times, 
+atributos dos jogadores e informações sobre cada partida.
+Através da definição de funções de pertinência e regras, é criado um sistema de 
+inferência fuzzy, sendo possível gerar um resultado de cada partida, e por fim, 
+o resultado do campeonato. 
+Os resultados obtidos demonstram a eficácia da lógica fuzzy na previsão de 
+cenários, sendo uma ferramenta útil para usos científicos e comerciais. 
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -46,38 +58,61 @@ Campeonato, Futebol, Fuzzificação, Modelagem, Previsão, Sistema, Esporte, Ló
 \end{IEEEkeywords}
 
 \section{Introdução}
-This document is a model and instructions for \LaTeX.
-Please observe the conference page limits. 
+\indent Desde os primórdios da civilização, os seres humanos possuem um desejo 
+intrínseco de competir, característica impulsionada por uma combinação de
+diversos fatores. Biologicamente, a competição pode ser atrelada à busca por 
+sobrevivência e à reprodução, pois os indivíduos competiam por recursos 
+escassos e por parceiros sexuais. Psicologicamente, competir é uma maneira de 
+obter reconhecimentos dos outros indivíduos do grupo e ser aceito socialmente, 
+além de validar habilidades. Por fim, a competição pode ser considerada uma 
+característica que molda o comportamentos dos indivíduos e influencia as 
+estruturas sociais e econômicas da nossa socidade \\
+\indent Com o passar dos anos, as apostas esportivas crescem cada vez mais no 
+Brasil, com casas de apostas presentes como patrocinadoras de praticamente 
+todos as equipes da série A do Campeonato Brasileiro de 2024. Porém, as apostas 
+não são um fenômeno recente, existindo registros que remontam à antiguidade, 
+quando indivíduos de civilizações greco-romanas apostavam em resultados dos 
+Jogos Olímpicos e corridas de bigas. Ao longo dos séculos houveram mudanças na 
+maneira que as apostas eram feitas, sendo incorporadas em diferentes esportes e 
+eventos. No século XIX, o Reino Unido ficou conhecido por estabelecer uma base 
+de como as apostas são feitas nos dias atuais, onde haviam casas que geravam os 
+valores de retorno para os diferentes tipos de apostas disponíveis. Atualmente, 
+o crescimento do uso da internet possibilitou maior facilidade para que usuários 
+pudessem realizar os seus palpites sem precisar sair de casa.\\
+\indent Com o grande crescimento do poder computacional e avanços tecnológicos, 
+foram desenvolvidos diversos algoritmos que tentam prever os resultados de 
+partidas e campeonatos. Ferramente de machine learning e análise de grandes 
+bases de dados, ou big data, permitem criar modelos com alta precisão. Uma 
+destas diversas ferramentas é a lógica fuzzy, particularmente eficaz em modelar 
+casos complexos e subjetivos, diferentes da lógica binária. Este artigo explora 
+o uso dessa ferramenta na tentativa de prever os resultados do Campeonato 
+Brasileiro de 2024, que com o tempo, pode provar ou não a eficácia do modelo.
 
-\section{Ease of Use}
+\section{Objetivos}
+\indent Esse artigo tem como principais objetivos desenvolver um modelo de 
+previsão baseado em lógica fuzzy para prever os resultados do Campeonato 
+Brasileiro de 2024 utilizando dados disponibilizados na internet, analisar a 
+eficácia desse modelo comparando com os últimos campeonatos, identificar as 
+variáveis mais interessantes de serem utilizadas, validar o modelo através de 
+testes, alterando variáveis, comparando os resultados e explorando diferentes 
+cenários.\\
+\indent A modelagem desse problema pode ser dividida em quatro partes, sendo o 
+tratamento dos dados utilizados através da busca por variáveis mais 
+relevantes e combinação de dados de diferentes anos através de ferramentas 
+estatísticas, criação das funções de pertinência a partir dos dados gerados, 
+criação das regras com base nas variáveis e funções de pertinência e simulação 
+e computação dos resultados.
 
-\subsection{Maintaining the Integrity of the Specifications}
-
-The IEEEtran class file is used to format your paper and style the text. All margins, 
-column widths, line spaces, and text fonts are prescribed; please do not 
-alter them. You may note peculiarities. For example, the head margin
-measures proportionately more than is customary. This measurement 
-and others are deliberate, using specifications that anticipate your paper 
-as one part of the entire proceedings, and not as an independent document. 
-Please do not revise any of the current designations.
-
-\section{Prepare Your Paper Before Styling}
-Before you begin to format your paper, first write and save the content as a 
+\section{Metodologia}
+\indent Before you begin to format your paper, first write and save the content as a 
 separate text file. Complete all content and organizational editing before 
 formatting. Please note sections \ref{AA}--\ref{SCM} below for more information on 
-proofreading, spelling and grammar.
-
-Keep your text and graphic files separate until after the text has been 
+proofreading, spelling and grammar.\\
+\indent Keep your text and graphic files separate until after the text has been 
 formatted and styled. Do not number text heads---{\LaTeX} will do that 
 for you.
 
-\subsection{Abbreviations and Acronyms}\label{AA}
-Define abbreviations and acronyms the first time they are used in the text, 
-even after they have been defined in the abstract. Abbreviations such as 
-IEEE, SI, MKS, CGS, ac, dc, and rms do not have to be defined. Do not use 
-abbreviations in the title or heads unless they are unavoidable.
-
-\subsection{Units}
+\section{Resultados}
 \begin{itemize}
 \item Use either SI (MKS) or CGS as primary units. (SI units are encouraged.) English units may be used as secondary units (in parentheses). An exception would be the use of English units as identifiers in trade, such as ``3.5-inch disk drive''.
 \item Avoid combining SI and CGS units, such as current in amperes and magnetic field in oersteds. This often leads to confusion because equations do not balance dimensionally. If you must use mixed units, clearly state the units for each quantity that you use in an equation.
