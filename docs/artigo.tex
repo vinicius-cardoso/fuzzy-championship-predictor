@@ -88,6 +88,24 @@ casos complexos e subjetivos, diferentes da lógica binária. Este artigo explor
 o uso dessa ferramenta na tentativa de prever os resultados do Campeonato 
 Brasileiro de 2024, que com o tempo, pode provar ou não a eficácia do modelo.
 
+\section{Revisão da Literatura}
+\subsection{Sistemas Difusos}
+\indent Os sistemas difusos, também conhecidos como sistemas nebulosos ou 
+sistemas fuzzy, são sistemas de controle que possuem como objetivo criar modelos 
+matemáticos baseados em informações imprecisas ou subjetivas, intrínsecas aos 
+seres humanos. O conceito de fuzzy surgiu a partir da Teoria de Conjuntos Fuzzy, 
+desenvolvida em 1965 pelo matemático estadunidense Lotfi Asker Zadeh.
+
+\subsection{Lógica Fuzzy}
+\indent Alternativamente à lógica Booleana, em que os valores de variáveis são 
+somente 0 ou 1, em um sistema difuso as variáveis podem ter valores 
+intermediários entre 0 e 1, que representam graus de pertinência. Na lógica 
+Fuzzy, as proposições podem ser parcialmente verdadeiras ou parcialmente falsas, 
+refletindo a natureza ambígua dos fenômenos do mundo real. Atualmente, a lógica 
+Fuzzy possui diversas aplicações, sendo utilizada em sistemas de controle, 
+sistemas de predição, sistemas de reconhecimento de padrões e sistemas de 
+tomadas de decisão.
+
 \section{Objetivos}
 \indent Esse artigo tem como principais objetivos desenvolver um modelo de 
 previsão baseado em lógica fuzzy para prever os resultados do Campeonato 
@@ -102,12 +120,17 @@ relevantes e combinação de dados de diferentes anos através de ferramentas
 estatísticas, criação das funções de pertinência a partir dos dados gerados, 
 criação das regras com base nas variáveis e funções de pertinência e simulação 
 e computação dos resultados.
+\indent Por fim, com a finalização do projeto, é possível que a forma de modelar 
+o sistema de previsão de resultados possa ser expandido para diversas outras 
+áreas, como a medicina, engenharia, biologia ou mesmo em outros esportes.
 
 \section{Metodologia}
 \indent Este trabalho tem como objetivo criar um sistem de previsões para um 
 campeonato. Para isso, será necessário criar uma maneira de analisar os dados 
 disponíveis e criar a estrutura do sistema fuzzy necessária para que os 
 resultados sejam obtidos de maneira correta.\\
+
+\subsection{Fonte de Dados}
 \indent Como fonte de dados, foi utilizado um banco de dados disponibilizado na 
 internet com o nome 'Base dos Dados' em um arquivo de formato CSV 
 (Comma-separated Values), que contém as seguintes colunas:
@@ -148,7 +171,9 @@ internet com o nome 'Base dos Dados' em um arquivo de formato CSV
     \item Chutes Fora Mandante
     \item Chutes Fora Visitante
 \end{itemize}
-\indent A partir desses dados, as variáveis de entrada definida serão as seguintes:
+
+\subsection{Variáveis Utilizadas}
+\indent A partir desses dados, as variáveis de entrada definidas serão as seguintes:
 \begin{itemize}
     \item Valor da Equipe Mandante
     \item Valor da Equipe Visitante
@@ -166,80 +191,84 @@ internet com o nome 'Base dos Dados' em um arquivo de formato CSV
     \item Percentual de Vitórias da Equipe Visitante
 \end{itemize}
 Como variável de saída temos apenas o número de gols de cada equipe na partida simulada.
+
+\subsection{Funções de Pertinência}
 \indent Após as definições das variáveis, é necessário criar as funções de 
 pertinência, que serão responsáveis por representar a incerteza na modelagem. Os
 valores escolhidos foram:
 
-\textbf{Valor da Equipe Mandante:}
+\subsubsection{Valor da Equipe Mandante}
 \begin{itemize}
     \item Baixo: [0, 30, 70]
     \item Médio: [40, 100, 110]
     \item Alto: [90, 150, 220]
 \end{itemize}
 
-\textbf{Valor da Equipe Visitante:}
+\subsubsection{Valor da Equipe Visitante}
 \begin{itemize}
     \item Baixo: [0, 30, 70]
     \item Médio: [40, 100, 110]
     \item Alto: [90, 150, 220]
 \end{itemize}
 
-\textbf{Idade Média do Time Mandante e Visitante:}
+\subsubsection{Idade Média do Time Mandante e Visitante}
 \begin{itemize}
     \item Jovem: [20, 20, 23]
     \item Média: [23, 25, 27]
     \item Experiente: [26, 29, 31]
 \end{itemize}
 
-\textbf{Média de Gols Marcados e Sofridos pelo Time Mandante:}
+\subsubsection{Média de Gols Marcados e Sofridos pelo Time Mandante}
 \begin{itemize}
     \item Baixa: [0, 0.6, 1.2]
     \item Média: [1, 1.5, 1.8]
     \item Alta: [1.5, 1.85, 2.2]
 \end{itemize}
 
-\textbf{Média de Gols Marcados e Sofridos pelo Time Visitante:}
+\subsubsection{Média de Gols Marcados e Sofridos pelo Time Visitante}
 \begin{itemize}
     \item Baixa: [0, 0.4, 1]
     \item Média: [0.85, 1, 1.1]
     \item Alta: [1, 1.2, 1.4]
 \end{itemize}
 
-\textbf{Percentual de Vitórias e Derrotas do Time Mandante:}
+\subsubsection{Percentual de Vitórias e Derrotas do Time Mandante}
 \begin{itemize}
     \item Baixo: [0, 32, 46]
     \item Médio: [35, 50, 60]
     \item Alto: [52, 60, 75]
 \end{itemize}
 
-\textbf{Percentual de Vitórias e Derrotas do Time Visitante:}
+\subsubsection{Percentual de Vitórias e Derrotas do Time Visitante}
 \begin{itemize}
     \item Baixo: [0, 15, 20]
     \item Médio: [18, 25, 30]
     \item Alto: [28, 34, 40]
 \end{itemize}
 
-\textbf{Percentual de Vitórias por Colocação do Time Mandante:}
+\subsubsection{Percentual de Vitórias por Colocação do Time Mandante}
 \begin{itemize}
     \item Baixo: [0, 15, 40]
     \item Médio: [38, 50, 65]
     \item Alto: [60, 85, 100]
 \end{itemize}
 
-\textbf{Percentual de Vitórias por Colocação do Time Visitante:}
+\subsubsection{Percentual de Vitórias por Colocação do Time Visitante}
 \begin{itemize}
     \item Baixo: [0, 15, 24]
     \item Médio: [17, 24, 32]
     \item Alto: [30, 69, 75]
 \end{itemize}
 
-\textbf{Gols Marcados no Jogo:}
+\subsubsection{Gols Marcados no Jogo}
 \begin{itemize}
     \item Poucos: [0, 0, 2]
     \item Moderados: [0, 2, 4]
     \item Muitos: [3, 4, 7]
 \end{itemize}
 
+
+\subsection{Regras Definidas}
 \indent As regras foram definidas de modo a estimar a quantidade de gols em uma 
 partida de futebol com base nas várias variáveis de entrada apresentadas, como 
 o valor da equipe mandante e visitante, a idade média dos times mandante e 
@@ -254,6 +283,7 @@ considerada baixa, pois são equipes similares em um aspecto. Assim, as regras
 abrangem diversas combinações possíveis entre as variáveis de entrada para 
 prever a quantidade de gols esperada na partida.
 
+\subsection{Simulação}
 \indent Por fim, criadas as condições para a simulação do sistema, podemos 
 realizar a execução, que trará como resultado a quantidade de gols de cada 
 equipe em cada partida. Ao todo serão 380 partidas divididas em 38 rodadas, que 
@@ -264,6 +294,8 @@ classificação é dada pelo número de pontos, havendo como critério de desemp
 número de vitórias e o saldo de gols.
 
 \section{Resultados}
+
+\subsection{Resultados dos Campeonatos Anteriores}
 
 \indent Antes de analisar os resultados, podemos ter como referência os 4 
 primeiros colocados do Campeonato Brasileiro nos últimos 5 anos, presentes na 
@@ -291,7 +323,13 @@ tabela abaixo:
     \end{center}
 \end{table}
 
-\indent Resultado final:
+\indent A partir desses dados, é possível observar que times como Palmeiras, Atlético-MG 
+e Flamengo estão presentes frequentemente nas melhores colocações nos últimos 
+anos, de modo a se esperar que a simulação tenda a continuar classificando estes 
+clubes nas melhores colocações. 
+
+\subsection{Resultado da Simulação}
+\indent Classificação final para o Campeonato Brasileiro de 2024:
 
 \begin{table}[htbp]
     \caption{Resultado da simulação (previsão)}
@@ -344,6 +382,40 @@ tabela abaixo:
     \label{tab2}
     \end{center}
 \end{table}
+
+\indent Como citado anteriormente, a presença de clubes como Palmeiras, 
+Atlético-MG e Flamengo era esperada pois eram clubes que estão com resultados 
+consistentes nos últimos anos.
+
+\subsection{Possíveis Problemas}
+\indent Devido ao fato do modelo não ser perfeito e ao futebol brasileiro ser 
+muito imprevisível, é possível que os resultados sejam muito divergentes dos 
+resultados reais. O modelo não considera fatores como troca de técnicos, 
+problemas financeiros das equipes, lesões de jogadores ou desastres naturais, 
+tornando-o impreciso por natureza.\\
+\indent Outra consideração a ser feita é a de que em todo campeonato, os 4 últimos 
+clubes na classificação são rebaixaos para a divisão abaixo, tornando os dados 
+dessas equipes inexistentes em alguns anos. Uma solução seria ter os dados de 
+todas as partidas de todas as divisões do Campeonato Brasileiro, porém essa 
+documentação é escassa devido ao fatos das divisões menores terem menos 
+relevância para o público em geral.
+
+\section{Conclusão}
+\indent Este trabalho explorou a aplicação da lógica fuzzy em um sistema de 
+previsão dos resultados do Campeonato Brasileiro de 2024, mostrando ser um modelo 
+eficaz de previsão e provando a aplicação da aplicação da matemática para a 
+modelagem de sistemas que envolvem a incerteza e subjetividade presentes nas 
+ações humanas.\\
+\indent A partir da análise de dados coletados, foi possível gerar variáveis, 
+funções de pertinência, regras e uma simulação que resultou na previsão da 
+classificação dos clubes da série A do campeonato.\\
+\indent Os resultados obtidos foram os esperados, mostrando similaridade com 
+os dos últimos anos e próximo do que se espera do ano em curso, contudo, é 
+importante reconhecer que o modelo possui imprecisões e pode estar distante da 
+realidade que pode haver no final do campeonato.\\
+\indent Por fim, este estudo teve grande contribuição para o entendimento do 
+funcionamento dos sistemas difusos, assim como para as aplicações desse sistema 
+em problemas atuais.
 
 \begin{thebibliography}{00}
 \bibitem{b1} Trawiński, Krzysztof, A Fuzzy Classification System for Prediction of the Results of the
